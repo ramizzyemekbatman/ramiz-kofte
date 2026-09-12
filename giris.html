@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Giriş Yap | Ramiz Köfte</title>
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="manifest" href="site.webmanifest">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet" />
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary: #0f2818; --primary-hover: #1a3d26; --accent: #8b6f47;
+            --bg: #f5f2ed; --surface: #ffffff; --surface-alt: #efece6;
+            --text: #14110d; --text-secondary: #4a463f; --text-muted: #8a8579;
+            --border: #e0dcd3; --border-strong: #c9c4b8; --danger: #a8322d;
+            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-serif: 'Playfair Display', Georgia, serif;
+            --radius: 4px; --radius-lg: 8px;
+        }
+        body.dark {
+            --primary: #4a9d6e; --primary-hover: #6ab88a; --accent: #c9a877;
+            --bg: #0d100e; --surface: #161a17; --surface-alt: #1e231f;
+            --text: #ede9e2; --text-secondary: #b3ada3; --text-muted: #6b6660;
+            --border: #262b27; --border-strong: #3a403b;
+        }
+        body { font-family: var(--font-sans); background: var(--bg); color: var(--text); min-height: 100vh; transition: background 0.2s, color 0.2s; -webkit-font-smoothing: antialiased; line-height: 1.55; font-size: 15px; }
+        a { text-decoration: none; color: inherit; }
+
+        .auth-layout { display: grid; grid-template-columns: 1fr 1fr; min-height: 100vh; }
+        .brand-panel { position: relative; background-image: url('hero.jpeg'); background-size: cover; background-position: center; background-color: var(--primary); display: flex; flex-direction: column; justify-content: space-between; padding: 48px 56px; color: white; }
+        .brand-panel::before { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(8,20,14,0.85) 0%, rgba(8,20,14,0.65) 50%, rgba(8,20,14,0.9) 100%); z-index: 1; }
+        .brand-panel > * { position: relative; z-index: 2; }
+        .brand-top { display: flex; align-items: center; gap: 14px; }
+        .brand-logo { width: 56px; height: 56px; border-radius: 50%; overflow: hidden; border: 1px solid rgba(255,255,255,0.25); background: white; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+        .brand-logo img { width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 50%; transform: scale(1.2); }
+        .brand-name { font-family: var(--font-serif); font-size: 22px; font-weight: 600; line-height: 1.05; letter-spacing: 0.2px; }
+        .brand-name small { display: block; font-family: var(--font-sans); font-size: 10px; font-weight: 500; color: rgba(255,255,255,0.6); letter-spacing: 2px; text-transform: uppercase; margin-top: 4px; }
+        .brand-mid { display: flex; flex-direction: column; justify-content: center; flex: 1; max-width: 480px; padding: 40px 0; }
+        .brand-mid .eyebrow { font-size: 11px; font-weight: 500; letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 20px; }
+        .brand-mid h2 { font-family: var(--font-serif); font-size: 48px; font-weight: 500; line-height: 1.1; letter-spacing: -0.8px; margin-bottom: 24px; }
+        .brand-mid p { font-size: 16px; line-height: 1.7; color: rgba(255,255,255,0.75); margin-bottom: 32px; }
+        .feature-list { list-style: none; display: flex; flex-direction: column; gap: 14px; }
+        .feature-list li { display: flex; align-items: flex-start; gap: 12px; font-size: 14px; color: rgba(255,255,255,0.85); line-height: 1.55; }
+        .feature-list li svg { width: 18px; height: 18px; stroke: var(--accent); stroke-width: 1.8; flex-shrink: 0; margin-top: 2px; fill: none; }
+        .brand-foot { font-size: 12px; color: rgba(255,255,255,0.5); letter-spacing: 0.5px; }
+        .brand-foot a { color: rgba(255,255,255,0.7); text-decoration: underline; }
+        .brand-foot a:hover { color: white; }
+
+        .form-panel { display: flex; flex-direction: column; padding: 40px 48px; position: relative; overflow-y: auto; }
+        .form-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; }
+        .btn-back { background: transparent; border: 1px solid var(--border); color: var(--text-secondary); padding: 10px 18px; border-radius: var(--radius); font-weight: 500; font-size: 12px; cursor: pointer; transition: 0.15s; font-family: inherit; letter-spacing: 0.6px; text-transform: uppercase; display: flex; align-items: center; gap: 8px; }
+        .btn-back:hover { border-color: var(--primary); color: var(--primary); }
+        .btn-back svg { width: 14px; height: 14px; }
+        .btn-theme { background: transparent; border: 1px solid var(--border); color: var(--text-secondary); width: 40px; height: 40px; border-radius: var(--radius); cursor: pointer; transition: 0.15s; display: flex; align-items: center; justify-content: center; }
+        .btn-theme:hover { border-color: var(--primary); color: var(--primary); }
+        .btn-theme svg { width: 15px; height: 15px; }
+        .form-box { max-width: 420px; width: 100%; margin: auto; padding-bottom: 40px; }
+
+        .tabs { display: flex; border-bottom: 1px solid var(--border); margin-bottom: 32px; }
+        .tab-btn { flex: 1; padding: 14px 0; border: none; background: transparent; font-family: inherit; font-weight: 500; font-size: 12px; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; cursor: pointer; transition: 0.15s; border-bottom: 2px solid transparent; margin-bottom: -1px; }
+        .tab-btn.active { color: var(--primary); border-bottom-color: var(--primary); font-weight: 600; }
+        .tab-btn:hover:not(.active) { color: var(--text); }
+
+        .form-heading { margin-bottom: 28px; }
+        .form-heading h1 { font-family: var(--font-serif); font-size: 32px; font-weight: 500; color: var(--text); letter-spacing: -0.5px; margin-bottom: 6px; }
+        .form-heading p { font-size: 14px; color: var(--text-muted); }
+
+        .form-group { margin-bottom: 18px; }
+        .form-group label { display: block; font-weight: 500; color: var(--text-secondary); font-size: 11px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+        .form-group input { width: 100%; padding: 13px 16px; border: 1px solid var(--border); border-radius: var(--radius); font-size: 15px; font-family: inherit; background: var(--surface); color: var(--text); transition: 0.15s; }
+        .form-group input:focus { outline: none; border-color: var(--primary); }
+        .form-group input::placeholder { color: var(--text-muted); }
+        .code-row { display: flex; gap: 8px; align-items: stretch; }
+        .code-row input { flex: 1; }
+        .code-row .btn-inline { flex: 0 0 auto; padding: 13px 20px; background: transparent; border: 1px solid var(--border); border-radius: var(--radius); font-weight: 600; font-size: 11px; cursor: pointer; font-family: inherit; letter-spacing: 1px; text-transform: uppercase; color: var(--text-secondary); transition: 0.15s; white-space: nowrap; }
+        .code-row .btn-inline:hover { border-color: var(--primary); color: var(--primary); }
+        .code-row .btn-inline:disabled { opacity: 0.5; cursor: not-allowed; }
+        .kvkk-row { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 20px; font-size: 12px; color: var(--text-secondary); line-height: 1.55; }
+        .kvkk-row input[type="checkbox"] { width: 15px; height: 15px; margin-top: 2px; accent-color: var(--primary); cursor: pointer; flex-shrink: 0; }
+        .kvkk-row label { margin: 0; cursor: pointer; font-size: 12px; text-transform: none; letter-spacing: 0; font-weight: 400; color: var(--text-secondary); }
+        .kvkk-row a { color: var(--primary); font-weight: 600; text-decoration: underline; cursor: pointer; }
+        .btn-submit { width: 100%; padding: 15px; background: var(--primary); color: white; border: 1px solid var(--primary); border-radius: var(--radius); font-weight: 600; font-size: 12px; cursor: pointer; font-family: inherit; letter-spacing: 1.2px; text-transform: uppercase; transition: 0.15s; margin-top: 4px; }
+        .btn-submit:hover { background: var(--primary-hover); border-color: var(--primary-hover); }
+        .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; }
+        .message { margin-top: 18px; padding: 12px 16px; border-radius: var(--radius); display: none; font-weight: 500; font-size: 13px; line-height: 1.5; }
+        .message.show { display: block; }
+        .message.success { background: rgba(34,139,76,0.08); color: #166534; border: 1px solid rgba(34,139,76,0.2); }
+        .message.error { background: rgba(168,50,45,0.06); color: #7a2420; border: 1px solid rgba(168,50,45,0.2); }
+        body.dark .message.success { background: rgba(74,157,110,0.12); color: #6ee7a4; }
+        body.dark .message.error { background: rgba(168,50,45,0.12); color: #f87171; }
+        .switch-text { text-align: center; margin-top: 22px; font-size: 13px; color: var(--text-muted); }
+        .switch-text a { color: var(--primary); font-weight: 600; cursor: pointer; }
+        .switch-text a:hover { text-decoration: underline; }
+
+        .modal-overlay { position: fixed; inset: 0; background: rgba(8,20,14,0.65); backdrop-filter: blur(4px); z-index: 999; display: none; align-items: center; justify-content: center; padding: 20px; }
+        .modal-overlay.show { display: flex; }
+        .modal-content { background: var(--surface); border-radius: var(--radius-lg); padding: 36px 34px; max-width: 520px; width: 100%; max-height: 85vh; overflow-y: auto; box-shadow: 0 24px 64px rgba(0,0,0,0.2); position: relative; border: 1px solid var(--border); color: var(--text); }
+        .modal-content .close-modal { position: absolute; right: 18px; top: 16px; background: none; border: none; font-size: 22px; cursor: pointer; color: var(--text-muted); font-family: inherit; line-height: 1; }
+        .modal-content h3 { font-family: var(--font-serif); font-size: 24px; color: var(--text); margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 14px; font-weight: 600; }
+        .policy-text { font-size: 13.5px; line-height: 1.8; color: var(--text-secondary); }
+        .policy-text h4 { color: var(--text); margin: 22px 0 8px; font-size: 14px; font-weight: 600; }
+        .policy-text ul { padding-left: 20px; }
+
+        .loading-overlay { position: fixed; inset: 0; background: rgba(245,242,237,0.85); backdrop-filter: blur(4px); display: none; align-items: center; justify-content: center; z-index: 500; flex-direction: column; gap: 20px; }
+        body.dark .loading-overlay { background: rgba(13,16,14,0.85); }
+        .loading-overlay.show { display: flex; }
+        .spinner { width: 40px; height: 40px; border: 2px solid var(--border); border-top-color: var(--primary); border-radius: 50%; animation: spin 0.8s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .loading-overlay .loading-text { color: var(--text-secondary); font-weight: 500; font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase; }
+        .hidden { display: none !important; }
+
+        @media (max-width: 900px) {
+            .auth-layout { grid-template-columns: 1fr; }
+            .brand-panel { display: none; }
+            .form-panel { padding: 24px; min-height: 100vh; }
+        }
+        @media (max-width: 500px) {
+            .form-panel { padding: 20px; }
+            .form-heading h1 { font-size: 26px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="auth-layout">
+    <aside class="brand-panel">
+        <div class="brand-top">
+            <div class="brand-logo"><img src="favicon-source.png" alt="Ramiz Köfte" /></div>
+            <div class="brand-name">Ramiz Köfte<small>Batman · Est. 1928</small></div>
+        </div>
+        <div class="brand-mid">
+            <div class="eyebrow">Sadakat Programı</div>
+            <h2>Lezzet geleneğine<br>siz de ortak olun.</h2>
+            <p>Hesabınızla favori ürünlerinizi kaydedin, puan biriktirin ve kampanyalardan ilk siz haberdar olun.</p>
+            <ul class="feature-list">
+                <li>
+                    <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                    <span>300 TL ve üzeri alışverişte 20 puan</span>
+                </li>
+                <li>
+                    <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                    <span>Favori ürünlerinizi kaydedin</span>
+                </li>
+                <li>
+                    <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                    <span>Kampanyalardan ilk siz haberdar olun</span>
+                </li>
+            </ul>
+        </div>
+        <div class="brand-foot">© 2026 Ramiz Köfte · <a href="index.html">Anasayfa</a></div>
+    </aside>
+
+    <main class="form-panel">
+        <div class="form-top">
+            <button class="btn-back" onclick="location.href='index.html'">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+                <span>Anasayfa</span>
+            </button>
+            <button class="btn-theme" id="themeToggle" title="Tema">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" id="themeIcon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+            </button>
+        </div>
+
+        <div class="form-box">
+            <div class="tabs">
+                <button class="tab-btn active" id="tabLogin" data-tab="login">Giriş Yap</button>
+                <button class="tab-btn" id="tabRegister" data-tab="register">Kaydol</button>
+            </div>
+
+            <div id="loginSection">
+                <div class="form-heading">
+                    <h1>Tekrar hoş geldiniz</h1>
+                    <p>Hesabınıza giriş yaparak devam edin.</p>
+                </div>
+                <div class="form-group"><label>Ad Soyad</label><input type="text" id="loginName" placeholder="Ahmet Yılmaz" autocomplete="name" /></div>
+                <div class="form-group"><label>Telefon Numarası</label><input type="tel" id="loginPhone" placeholder="05xx xxx xx xx" maxlength="11" autocomplete="tel" /></div>
+                <div class="form-group"><label>Şifre</label><input type="password" id="loginPassword" placeholder="••••••••" autocomplete="current-password" /></div>
+                <button class="btn-submit" id="loginBtn">Giriş Yap</button>
+                <div class="message" id="loginMessage"></div>
+                <div class="switch-text">Hesabınız yok mu? <a id="goToRegister">Hemen kaydolun</a></div>
+            </div>
+
+            <div id="registerSection" class="hidden">
+                <div class="form-heading">
+                    <h1>Hesap oluşturun</h1>
+                    <p>Birkaç adımda üye olun ve avantajlardan yararlanın.</p>
+                </div>
+                <div class="form-group"><label>Ad Soyad</label><input type="text" id="regName" placeholder="Ahmet Yılmaz" autocomplete="name" /></div>
+                <div class="form-group"><label>Telefon Numarası</label><input type="tel" id="regPhone" placeholder="05xx xxx xx xx" maxlength="11" autocomplete="tel" /></div>
+                <div class="form-group"><label>Şifre</label><input type="password" id="regPassword" placeholder="En az 6 karakter" autocomplete="new-password" /></div>
+                <div class="form-group"><label>Şifre (Tekrar)</label><input type="password" id="regPasswordConfirm" placeholder="Şifreyi tekrar girin" autocomplete="new-password" /></div>
+                <div class="form-group">
+                    <label>Doğrulama Kodu</label>
+                    <div class="code-row">
+                        <input type="text" id="regCode" placeholder="4 haneli kod" maxlength="4" inputmode="numeric" />
+                        <button class="btn-inline" id="sendCodeBtn">Kod Al</button>
+                    </div>
+                </div>
+                <div class="kvkk-row">
+                    <input type="checkbox" id="regKvkk" />
+                    <label for="regKvkk"><a id="openKvkk">KVKK Aydınlatma Metni</a>'ni okudum, kişisel verilerimin işlenmesine onay veriyorum.</label>
+                </div>
+                <button class="btn-submit" id="registerBtn">Kaydol</button>
+                <div class="message" id="registerMessage"></div>
+                <div class="switch-text">Zaten hesabınız var mı? <a id="goToLogin">Giriş yapın</a></div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<div class="modal-overlay" id="kvkkModal">
+    <div class="modal-content">
+        <button class="close-modal" id="closeKvkk">×</button>
+        <h3>KVKK Aydınlatma Metni</h3>
+        <div class="policy-text">
+            <p><strong>Veri Sorumlusu:</strong> Ramiz Köfte Batman Şubesi</p>
+            <p><strong>Adres:</strong> Batman Merkez Gültepe Mah. Demokrasi Bul. Petrol City 2. Kat Dış Kapı 60 İç Kapı 116</p>
+            <p><strong>Telefon:</strong> 0551 571 52 72</p>
+            <h4>1. İşlenen Kişisel Veriler</h4>
+            <ul><li>Ad ve soyad</li><li>Telefon numarası</li><li>Puan kazanım ve harcama geçmişi</li><li>Favori ürün tercihleri</li><li>Site üzerindeki işlem kayıtları</li></ul>
+            <h4>2. Kişisel Verilerin İşlenme Amaçları</h4>
+            <ul><li>Üyelik işlemlerinin gerçekleştirilmesi</li><li>Puan kazanım ve kampanya sisteminin işletilmesi</li><li>Müşteri hizmetleri ve talep yönetimi</li><li>Favori ürünlerin kaydedilmesi</li><li>Yasal yükümlülüklerin yerine getirilmesi</li></ul>
+            <h4>3. Toplanma Yöntemi ve Hukuki Sebep</h4>
+            <p>Kişisel verileriniz, web sitemiz üzerinden elektronik ortamda toplanmaktadır. Hukuki sebep olarak KVKK'nın 5. maddesinin 2. fıkrası uyarınca (c), (ç) ve (f) bentleri esas alınmaktadır.</p>
+            <h4>4. Verilerin Aktarımı</h4>
+            <p>Kişisel verileriniz; yasal zorunluluklar dışında üçüncü kişilerle paylaşılmaz.</p>
+            <h4>5. Saklama Süresi</h4>
+            <p>Verileriniz, üyeliğiniz devam ettiği sürece ve yasal saklama süreleri boyunca muhafaza edilir.</p>
+            <h4>6. KVKK Kapsamındaki Haklarınız</h4>
+            <ul><li>Kişisel verilerinizin işlenip işlenmediğini öğrenme</li><li>İşlenmişse bilgi talep etme</li><li>İşlenme amacını öğrenme</li><li>Düzeltilmesini isteme</li><li>Silinmesini veya yok edilmesini isteme</li><li>Zararın giderilmesini talep etme</li></ul>
+            <h4>7. Başvuru Yöntemi</h4>
+            <p>Başvurularınızı <strong>0551 571 52 72</strong> numaralı telefonu arayarak iletebilirsiniz. En geç 30 gün içinde ücretsiz sonuçlandırılır.</p>
+        </div>
+    </div>
+</div>
+
+<div class="loading-overlay" id="loadingOverlay">
+    <div class="spinner"></div>
+    <div class="loading-text">İşleniyor</div>
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+    import { getFirestore, doc, getDoc, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyCmxCNThK6AFdyEP9Zj6E_6kEsHBLCfIAY",
+        authDomain: "ramiz-kofte.firebaseapp.com",
+        projectId: "ramiz-kofte",
+        storageBucket: "ramiz-kofte.firebasestorage.app",
+        messagingSenderId: "930378010869",
+        appId: "1:930378010869:web:cf08bee55f56cbcb7835bc"
+    };
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const $ = (id) => document.getElementById(id);
+    function showLoading() { $('loadingOverlay').classList.add('show'); }
+    function hideLoading() { $('loadingOverlay').classList.remove('show'); }
+    function showMessage(el, text, type = 'success') { el.textContent = text; el.className = `message show ${type}`; }
+    function hideMessage(el) { el.className = 'message'; el.textContent = ''; }
+
+    async function hashPassword(password) {
+        const encoder = new TextEncoder();
+        const data = encoder.encode(password + '::ramiz-kofte-salt-2026');
+        const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+        return Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    function initTheme() {
+        const saved = localStorage.getItem('ramiz_theme');
+        if (saved === 'dark') { document.body.classList.add('dark'); updateThemeIcon(true); }
+    }
+    function updateThemeIcon(isDark) {
+        $('themeIcon').innerHTML = isDark
+            ? '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>'
+            : '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+    }
+    $('themeToggle').addEventListener('click', () => {
+        document.body.classList.toggle('dark');
+        const isDark = document.body.classList.contains('dark');
+        updateThemeIcon(isDark);
+        localStorage.setItem('ramiz_theme', isDark ? 'dark' : 'light');
+    });
+
+    function switchTab(tab) {
+        if (tab === 'login') {
+            $('tabLogin').classList.add('active'); $('tabRegister').classList.remove('active');
+            $('loginSection').classList.remove('hidden'); $('registerSection').classList.add('hidden');
+            hideMessage($('loginMessage')); hideMessage($('registerMessage'));
+        } else {
+            $('tabRegister').classList.add('active'); $('tabLogin').classList.remove('active');
+            $('registerSection').classList.remove('hidden'); $('loginSection').classList.add('hidden');
+            hideMessage($('loginMessage')); hideMessage($('registerMessage'));
+        }
+    }
+    $('tabLogin').addEventListener('click', () => switchTab('login'));
+    $('tabRegister').addEventListener('click', () => switchTab('register'));
+    $('goToRegister').addEventListener('click', () => switchTab('register'));
+    $('goToLogin').addEventListener('click', () => switchTab('login'));
+
+    let pendingCode = null;
+    function sendSms(telefon) {
+        const code = Math.floor(1000 + Math.random() * 9000).toString();
+        pendingCode = code;
+        alert(`Test: ${telefon} numarasına ${code} kodu gönderildi.`);
+    }
+    $('sendCodeBtn').addEventListener('click', function() {
+        const phone = $('regPhone').value.trim().replace(/\s/g, '');
+        if (!phone || phone.length !== 11 || !/^05[0-9]{9}$/.test(phone)) { showMessage($('registerMessage'), 'Önce geçerli telefon numarası girin.', 'error'); return; }
+        sendSms(phone);
+        showMessage($('registerMessage'), 'Doğrulama kodu gönderildi.', 'success');
+        this.disabled = true; this.textContent = 'Gönderildi';
+        setTimeout(() => { this.disabled = false; this.textContent = 'Kod Al'; }, 30000);
+    });
+
+    $('loginBtn').addEventListener('click', async () => {
+        hideMessage($('loginMessage'));
+        const name = $('loginName').value.trim();
+        const phone = $('loginPhone').value.trim().replace(/\s/g, '');
+        const password = $('loginPassword').value;
+        if (!name || !phone || !password) { showMessage($('loginMessage'), 'Lütfen tüm alanları doldurun.', 'error'); return; }
+        if (phone.length !== 11 || !/^05[0-9]{9}$/.test(phone)) { showMessage($('loginMessage'), 'Geçerli bir telefon numarası girin.', 'error'); return; }
+        showLoading();
+        try {
+            const snap = await getDoc(doc(db, 'ramiz_users', phone));
+            if (!snap.exists()) { showMessage($('loginMessage'), 'Bu telefon numarasıyla kayıtlı hesap bulunamadı.', 'error'); hideLoading(); return; }
+            const user = snap.data();
+if ((user.adSoyad || '').toLocaleLowerCase('tr-TR').trim() !== name.toLocaleLowerCase('tr-TR').trim()) { showMessage($('loginMessage'), 'Ad soyad veya telefon hatalı.', 'error'); hideLoading(); return; }
+            const passwordHash = await hashPassword(password);
+            if (user.sifreHash) {
+                if (user.sifreHash !== passwordHash) { showMessage($('loginMessage'), 'Şifre hatalı.', 'error'); hideLoading(); return; }
+            } else {
+                await updateDoc(doc(db, 'ramiz_users', phone), { sifreHash: passwordHash });
+            }
+            localStorage.setItem('ramiz_session', phone);
+            showMessage($('loginMessage'), 'Giriş başarılı! Yönlendiriliyorsunuz...', 'success');
+            setTimeout(() => { location.href = 'index.html'; }, 700);
+        } catch (e) { showMessage($('loginMessage'), 'Hata: ' + e.message, 'error'); hideLoading(); }
+    });
+
+    $('registerBtn').addEventListener('click', async () => {
+        hideMessage($('registerMessage'));
+        const name = $('regName').value.trim();
+        const phone = $('regPhone').value.trim().replace(/\s/g, '');
+        const password = $('regPassword').value;
+        const passwordConfirm = $('regPasswordConfirm').value;
+        const code = $('regCode').value.trim();
+        if (!name || name.length < 3) { showMessage($('registerMessage'), 'Ad soyad en az 3 karakter olmalı.', 'error'); return; }
+        if (!phone || phone.length !== 11 || !/^05[0-9]{9}$/.test(phone)) { showMessage($('registerMessage'), 'Geçerli telefon numarası girin.', 'error'); return; }
+        if (!password || password.length < 6) { showMessage($('registerMessage'), 'Şifre en az 6 karakter olmalı.', 'error'); return; }
+        if (password !== passwordConfirm) { showMessage($('registerMessage'), 'Şifreler uyuşmuyor.', 'error'); return; }
+        if (!code) { showMessage($('registerMessage'), 'Doğrulama kodunu girin.', 'error'); return; }
+        if (code !== pendingCode) { showMessage($('registerMessage'), 'Hatalı doğrulama kodu.', 'error'); return; }
+        if (!$('regKvkk').checked) { showMessage($('registerMessage'), 'KVKK aydınlatma metnini onaylamanız gerekir.', 'error'); return; }
+        showLoading();
+        try {
+            const ref = doc(db, 'ramiz_users', phone);
+            const snap = await getDoc(ref);
+            if (snap.exists()) { showMessage($('registerMessage'), 'Bu telefon numarası zaten kayıtlı.', 'error'); hideLoading(); return; }
+            const sifreHash = await hashPassword(password);
+            const newUser = { adSoyad: name, puan: 0, history: [], favorites: [], sifreHash, verified: true, createdAt: Date.now() };
+            await setDoc(ref, newUser);
+            try { const id = 'log_' + Date.now(); await setDoc(doc(db, 'ramiz_logs', id), { action: 'Yeni kullanıcı: ' + name + ' (' + phone + ')', timestamp: Date.now() }); } catch { }
+            localStorage.setItem('ramiz_session', phone);
+            showMessage($('registerMessage'), 'Kayıt başarılı! Yönlendiriliyorsunuz...', 'success');
+            setTimeout(() => { location.href = 'index.html'; }, 800);
+        } catch (e) { showMessage($('registerMessage'), 'Hata: ' + e.message, 'error'); hideLoading(); }
+    });
+
+    function openKvkk() { $('kvkkModal').classList.add('show'); }
+    $('openKvkk').addEventListener('click', (e) => { e.preventDefault(); openKvkk(); });
+    $('closeKvkk').addEventListener('click', () => $('kvkkModal').classList.remove('show'));
+    $('kvkkModal').addEventListener('click', (e) => { if (e.target === $('kvkkModal')) $('kvkkModal').classList.remove('show'); });
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key !== 'Enter') return;
+        if (!$('loginSection').classList.contains('hidden') && document.activeElement.tagName === 'INPUT') $('loginBtn').click();
+        else if (!$('registerSection').classList.contains('hidden') && document.activeElement.tagName === 'INPUT') $('registerBtn').click();
+    });
+
+    function checkSession() {
+        const session = localStorage.getItem('ramiz_session');
+        if (session) location.href = 'index.html';
+    }
+
+    initTheme();
+    checkSession();
+</script>
+</body>
+</html>

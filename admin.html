@@ -1,0 +1,1185 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Yönetici Paneli | Ramiz Köfte</title>
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="manifest" href="site.webmanifest">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet" />
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --primary: #0f2818;
+            --primary-hover: #1a3d26;
+            --accent: #8b6f47;
+            --accent-hover: #6d5637;
+            --bg: #f5f2ed;
+            --surface: #ffffff;
+            --surface-alt: #efece6;
+            --text: #14110d;
+            --text-secondary: #4a463f;
+            --text-muted: #8a8579;
+            --border: #e0dcd3;
+            --border-strong: #c9c4b8;
+            --danger: #a8322d;
+            --success: #2d7a4f;
+            --warning: #b8873a;
+            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-serif: 'Playfair Display', Georgia, serif;
+            --radius: 4px;
+            --radius-lg: 8px;
+        }
+
+        body { font-family: var(--font-sans); background: var(--bg); color: var(--text); min-height: 100vh; -webkit-font-smoothing: antialiased; line-height: 1.55; font-size: 14px; }
+        a { text-decoration: none; color: inherit; }
+
+        /* LOGIN EKRANI */
+        .login-wrap { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px; background: var(--bg); }
+        .login-card { width: 100%; max-width: 400px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 44px 40px; }
+        .login-card .login-logo { width: 64px; height: 64px; border-radius: 50%; overflow: hidden; border: 1px solid var(--border-strong); background: var(--surface); margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; }
+        .login-card .login-logo img { width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 50%; transform: scale(1.2); }
+        .login-card h1 { font-family: var(--font-serif); font-size: 26px; font-weight: 600; text-align: center; color: var(--text); letter-spacing: -0.3px; margin-bottom: 6px; }
+        .login-card .subtitle { text-align: center; color: var(--text-muted); font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 32px; font-weight: 500; }
+        .login-card .form-group { margin-bottom: 16px; }
+        .login-card .form-group label { display: block; font-weight: 500; color: var(--text-secondary); font-size: 11px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+        .login-card .form-group input { width: 100%; padding: 12px 16px; border: 1px solid var(--border); border-radius: var(--radius); font-size: 15px; background: var(--surface); color: var(--text); font-family: inherit; transition: 0.15s; }
+        .login-card .form-group input:focus { outline: none; border-color: var(--primary); }
+        .login-card .btn-login { width: 100%; padding: 14px; background: var(--primary); border: 1px solid var(--primary); border-radius: var(--radius); color: white; font-weight: 600; font-size: 12px; letter-spacing: 1.2px; text-transform: uppercase; cursor: pointer; font-family: inherit; transition: 0.15s; margin-top: 8px; }
+        .login-card .btn-login:hover { background: var(--primary-hover); border-color: var(--primary-hover); }
+        .login-card .login-error { color: var(--danger); background: rgba(168,50,45,0.06); padding: 12px 16px; border-radius: var(--radius); margin-top: 14px; font-size: 13px; display: none; border: 1px solid rgba(168,50,45,0.2); }
+        .login-card .login-error.show { display: block; }
+        .login-card .hint { text-align: center; margin-top: 20px; font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px; }
+        .login-card .back-link { text-align: center; margin-top: 16px; font-size: 12px; }
+        .login-card .back-link a { color: var(--text-muted); }
+        .login-card .back-link a:hover { color: var(--primary); }
+
+        /* PANEL */
+        .topbar { background: var(--primary); color: rgba(255,255,255,0.85); font-size: 11px; letter-spacing: 1px; padding: 8px 32px; display: flex; justify-content: space-between; align-items: center; text-transform: uppercase; }
+        .topbar .tb-left, .topbar .tb-right { display: flex; gap: 24px; align-items: center; }
+
+        .admin-header { background: var(--surface); padding: 0 32px; height: 72px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; }
+        .admin-header .brand { display: flex; align-items: center; gap: 14px; }
+        .admin-header .brand-logo { width: 42px; height: 42px; border-radius: 50%; overflow: hidden; border: 1px solid var(--border-strong); flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+        .admin-header .brand-logo img { width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 50%; transform: scale(1.2); }
+        .admin-header .brand-text { font-family: var(--font-serif); font-size: 20px; font-weight: 600; color: var(--text); line-height: 1.05; }
+        .admin-header .brand-text small { display: block; font-family: var(--font-sans); font-size: 10px; font-weight: 500; color: var(--text-muted); letter-spacing: 2px; text-transform: uppercase; margin-top: 3px; }
+
+        .header-actions { display: flex; gap: 8px; align-items: center; }
+        .btn-ghost { background: transparent; border: 1px solid var(--border); color: var(--text-secondary); padding: 9px 16px; border-radius: var(--radius); font-weight: 600; font-size: 11px; cursor: pointer; font-family: inherit; letter-spacing: 1px; text-transform: uppercase; transition: 0.15s; }
+        .btn-ghost:hover { border-color: var(--primary); color: var(--primary); }
+        .btn-danger-ghost { background: transparent; border: 1px solid var(--border); color: var(--danger); padding: 9px 16px; border-radius: var(--radius); font-weight: 600; font-size: 11px; cursor: pointer; font-family: inherit; letter-spacing: 1px; text-transform: uppercase; transition: 0.15s; }
+        .btn-danger-ghost:hover { background: var(--danger); color: white; border-color: var(--danger); }
+
+        /* SEKMELER */
+        .admin-tabs { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 32px; display: flex; gap: 0; overflow-x: auto; position: sticky; top: 72px; z-index: 99; }
+        .admin-tab-btn { padding: 16px 22px; background: transparent; border: none; font-family: inherit; font-size: 11px; font-weight: 500; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; cursor: pointer; transition: 0.15s; border-bottom: 2px solid transparent; margin-bottom: -1px; white-space: nowrap; }
+        .admin-tab-btn.active { color: var(--primary); border-bottom-color: var(--primary); font-weight: 600; }
+        .admin-tab-btn:hover:not(.active) { color: var(--text); }
+
+        /* İÇERİK */
+        .admin-main { max-width: 1280px; margin: 0 auto; padding: 32px 32px 80px; }
+        .admin-section { display: none; }
+        .admin-section.active { display: block; }
+
+        .page-title { margin-bottom: 24px; }
+        .page-title .eyebrow { font-size: 10px; font-weight: 500; letter-spacing: 3px; text-transform: uppercase; color: var(--accent); margin-bottom: 6px; }
+        .page-title h2 { font-family: var(--font-serif); font-size: 28px; font-weight: 500; color: var(--text); letter-spacing: -0.3px; }
+
+        .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); margin-bottom: 24px; overflow: hidden; }
+        .card-head { padding: 18px 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+        .card-head h3 { font-family: var(--font-serif); font-size: 18px; font-weight: 600; color: var(--text); letter-spacing: -0.2px; }
+        .card-head .count { font-size: 10px; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500; }
+        .card-body { padding: 24px; }
+
+        /* FORM */
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+        .form-row.single { grid-template-columns: 1fr; }
+        .form-row.triple { grid-template-columns: 1fr 1fr 1fr; }
+        .form-group { margin-bottom: 16px; }
+        .form-group label { display: block; font-weight: 500; color: var(--text-secondary); font-size: 11px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 11px 14px; border: 1px solid var(--border); border-radius: var(--radius); font-size: 14px; font-family: inherit; background: var(--surface); color: var(--text); transition: 0.15s; }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: var(--primary); }
+        .form-group textarea { resize: vertical; min-height: 80px; }
+        .form-group select { appearance: none; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='%238a8579'><path d='M7 10l5 5 5-5z'/></svg>"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 40px; cursor: pointer; }
+
+        .photo-upload-area { display: flex; gap: 10px; align-items: stretch; flex-wrap: wrap; }
+        .photo-upload-area input[type="text"] { flex: 1; min-width: 180px; }
+        .photo-upload-area .upload-btn { background: var(--surface-alt); border: 1px solid var(--border); color: var(--text-secondary); padding: 11px 20px; border-radius: var(--radius); font-weight: 600; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; font-family: inherit; white-space: nowrap; transition: 0.15s; }
+        .photo-upload-area .upload-btn:hover { border-color: var(--primary); color: var(--primary); }
+        .photo-preview { margin-top: 12px; display: none; position: relative; width: fit-content; }
+        .photo-preview.show { display: block; }
+        .photo-preview img { max-width: 200px; max-height: 150px; border-radius: var(--radius); border: 1px solid var(--border); object-fit: cover; display: block; }
+        .photo-preview .remove-photo { position: absolute; top: -8px; right: -8px; background: var(--danger); color: white; border: 2px solid var(--surface); width: 26px; height: 26px; border-radius: 50%; cursor: pointer; font-size: 14px; line-height: 1; font-family: inherit; padding: 0; display: flex; align-items: center; justify-content: center; }
+        .photo-info { font-size: 11px; color: var(--text-muted); margin-top: 8px; letter-spacing: 0.3px; }
+
+        .btn-primary { background: var(--primary); border: 1px solid var(--primary); color: white; padding: 12px 26px; border-radius: var(--radius); font-weight: 600; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; font-family: inherit; transition: 0.15s; }
+        .btn-primary:hover { background: var(--primary-hover); border-color: var(--primary-hover); }
+        .btn-secondary { background: transparent; border: 1px solid var(--border); color: var(--text-secondary); padding: 12px 26px; border-radius: var(--radius); font-weight: 600; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; font-family: inherit; transition: 0.15s; }
+        .btn-secondary:hover { border-color: var(--primary); color: var(--primary); }
+
+        .message { margin-top: 16px; padding: 12px 16px; border-radius: var(--radius); display: none; font-weight: 500; font-size: 13px; }
+        .message.show { display: block; }
+        .message.success { background: rgba(34,139,76,0.08); color: #166534; border: 1px solid rgba(34,139,76,0.2); }
+        .message.error { background: rgba(168,50,45,0.06); color: #7a2420; border: 1px solid rgba(168,50,45,0.2); }
+
+        /* LİSTELER */
+        .list-admin { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+        .list-admin li { background: var(--surface-alt); padding: 16px 20px; border-radius: var(--radius); border: 1px solid var(--border); }
+        .list-admin li .item-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; flex-wrap: wrap; }
+        .list-admin li .item-main { flex: 1; min-width: 200px; }
+        .list-admin li .item-baslik { font-family: var(--font-serif); font-weight: 600; color: var(--text); font-size: 16px; letter-spacing: -0.2px; margin-bottom: 4px; }
+        .list-admin li .item-aciklama { color: var(--text-secondary); font-size: 13.5px; line-height: 1.55; margin-bottom: 6px; }
+        .list-admin li .item-meta { display: flex; gap: 14px; flex-wrap: wrap; font-size: 12px; color: var(--text-muted); letter-spacing: 0.3px; }
+        .list-admin li .item-meta .price { color: var(--text); font-weight: 600; font-family: var(--font-serif); font-size: 14px; }
+        .list-admin li .item-meta .cat { color: var(--accent); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+        .list-admin li img { max-width: 100%; border-radius: var(--radius); margin-top: 10px; max-height: 160px; object-fit: cover; display: block; }
+
+        .btn-delete { background: transparent; border: 1px solid var(--border); color: var(--danger); padding: 8px 16px; border-radius: var(--radius); cursor: pointer; font-size: 11px; font-family: inherit; letter-spacing: 1px; text-transform: uppercase; font-weight: 600; transition: 0.15s; }
+        .btn-delete:hover { background: var(--danger); color: white; border-color: var(--danger); }
+
+        .user-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+        .user-actions button { border: 1px solid var(--border); background: transparent; color: var(--text-secondary); padding: 7px 14px; border-radius: var(--radius); cursor: pointer; font-size: 11px; font-weight: 600; font-family: inherit; letter-spacing: 0.8px; text-transform: uppercase; transition: 0.15s; }
+        .user-actions button:hover { border-color: var(--primary); color: var(--primary); }
+        .user-actions button.danger:hover { border-color: var(--danger); color: var(--danger); }
+
+        /* STATS */
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 16px; }
+        .stat-card { background: var(--surface-alt); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px 20px; text-align: left; }
+        .stat-card .stat-icon { font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-muted); font-weight: 600; margin-bottom: 12px; }
+        .stat-card .stat-value { font-family: var(--font-serif); font-size: 36px; font-weight: 600; color: var(--text); line-height: 1; letter-spacing: -1px; }
+        .stat-card .stat-label { font-size: 11px; color: var(--text-muted); margin-top: 8px; letter-spacing: 0.5px; }
+
+        .top-list { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+        .top-list li { display: flex; align-items: center; gap: 14px; padding: 12px 16px; background: var(--surface-alt); border-radius: var(--radius); border: 1px solid var(--border); }
+        .top-list li .rank { font-family: var(--font-serif); font-size: 16px; font-weight: 600; color: var(--text-muted); min-width: 24px; }
+        .top-list li .rank.gold { color: #b8873a; }
+        .top-list li .rank.silver { color: #8a8579; }
+        .top-list li .rank.bronze { color: #a06d3a; }
+        .top-list li .name { flex: 1; font-weight: 500; color: var(--text); font-size: 14px; }
+        .top-list li .count { font-weight: 600; color: var(--primary); font-size: 14px; }
+
+        /* LOG */
+        .log-list { list-style: none; padding: 0; max-height: 600px; overflow-y: auto; display: flex; flex-direction: column; gap: 6px; }
+        .log-list li { background: var(--surface-alt); border-radius: var(--radius); padding: 11px 16px; border-left: 2px solid var(--primary); display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+        .log-list li .log-action { flex: 1; color: var(--text); font-size: 13px; font-weight: 500; }
+        .log-list li .log-date { color: var(--text-muted); font-size: 11px; letter-spacing: 0.3px; }
+
+        /* DUYURU ÖNİZLEME */
+        .notif-preview { background: var(--surface-alt); border-radius: var(--radius); padding: 16px 20px; border-left: 2px solid var(--accent); margin-bottom: 10px; }
+        .notif-preview .n-title { font-weight: 600; color: var(--text); font-size: 14px; margin-bottom: 4px; }
+        .notif-preview .n-text { color: var(--text-secondary); font-size: 13px; line-height: 1.55; }
+        .notif-preview .n-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; }
+        .notif-preview .n-date { color: var(--text-muted); font-size: 11px; }
+        .notif-preview .n-delete { background: none; border: none; color: var(--danger); cursor: pointer; font-weight: 600; font-size: 11px; letter-spacing: 0.8px; text-transform: uppercase; font-family: inherit; padding: 4px 8px; }
+        .notif-preview .n-delete:hover { text-decoration: underline; }
+
+        /* KULLANICI */
+        .user-search { display: flex; gap: 10px; margin-bottom: 18px; flex-wrap: wrap; }
+        .user-search input { flex: 1; padding: 12px 16px; border: 1px solid var(--border); border-radius: var(--radius); font-size: 14px; min-width: 180px; font-family: inherit; background: var(--surface); color: var(--text); }
+        .user-search input:focus { outline: none; border-color: var(--primary); }
+
+        .user-list { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+        .user-list li { background: var(--surface-alt); padding: 14px 18px; border-radius: var(--radius); border: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+        .user-list li .user-info { display: flex; flex-direction: column; cursor: pointer; flex: 1; min-width: 200px; }
+        .user-list li .user-info .name { font-weight: 600; color: var(--text); font-size: 15px; }
+        .user-list li .user-info .phone { color: var(--text-secondary); font-size: 13px; letter-spacing: 0.3px; }
+        .user-list li .user-info .detail { color: var(--text-muted); font-size: 12px; margin-top: 2px; }
+
+        /* MODAL */
+        .center-modal { position: fixed; inset: 0; background: rgba(8,20,14,0.65); backdrop-filter: blur(4px); z-index: 10000; display: none; align-items: center; justify-content: center; padding: 20px; }
+        .center-modal.show { display: flex; }
+        .center-box { background: var(--surface); border-radius: var(--radius-lg); padding: 36px 32px; max-width: 440px; width: 100%; border: 1px solid var(--border); max-height: 85vh; overflow-y: auto; position: relative; }
+        .center-box .close-x { position: absolute; right: 18px; top: 14px; background: none; border: none; font-size: 22px; cursor: pointer; color: var(--text-muted); font-family: inherit; line-height: 1; }
+        .center-box h3 { font-family: var(--font-serif); font-size: 22px; font-weight: 600; color: var(--text); margin-bottom: 6px; text-align: center; letter-spacing: -0.2px; }
+        .center-box .user-name { text-align: center; color: var(--text-secondary); font-size: 13px; font-weight: 500; margin-bottom: 4px; }
+        .center-box .subtitle { text-align: center; color: var(--text-muted); font-size: 12px; letter-spacing: 0.5px; margin-bottom: 22px; text-transform: uppercase; }
+        .center-box input { width: 100%; padding: 14px 16px; border: 1px solid var(--border); border-radius: var(--radius); font-size: 16px; text-align: center; font-family: inherit; margin-bottom: 12px; font-weight: 600; color: var(--text); background: var(--surface); }
+        .center-box input:focus { outline: none; border-color: var(--primary); }
+        .center-box .info { text-align: center; color: var(--success); font-weight: 600; font-size: 13px; margin-bottom: 20px; min-height: 20px; }
+        .center-box .btn-row { display: flex; gap: 10px; margin-top: 8px; }
+        .center-box .btn-row button { flex: 1; padding: 13px; border-radius: var(--radius); font-weight: 600; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; font-family: inherit; transition: 0.15s; }
+        .center-box .btn-confirm { background: var(--primary); color: white; border: 1px solid var(--primary); }
+        .center-box .btn-confirm:hover { background: var(--primary-hover); }
+        .center-box .btn-cancel { background: transparent; color: var(--text-secondary); border: 1px solid var(--border); }
+        .center-box .btn-cancel:hover { background: var(--surface-alt); }
+        .center-box .confirm-icon { font-size: 13px; text-align: center; margin-bottom: 12px; color: var(--warning); font-weight: 600; letter-spacing: 2px; text-transform: uppercase; }
+        .center-box .confirm-message { text-align: center; color: var(--text-secondary); font-size: 14px; margin-bottom: 24px; line-height: 1.6; }
+        .center-box .btn-row .btn-danger { background: var(--danger); border-color: var(--danger); color: white; }
+        .center-box .btn-row .btn-danger:hover { background: #8a2823; border-color: #8a2823; }
+
+        /* KULLANICI DETAY */
+        .detail-row { display: flex; justify-content: space-between; padding: 11px 0; border-bottom: 1px solid var(--border); font-size: 13.5px; }
+        .detail-row .label { color: var(--text-muted); }
+        .detail-row .value { color: var(--text); font-weight: 600; }
+        .detail-subtitle { margin-top: 18px; color: var(--text); font-size: 13px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; }
+        .history-item-modal { display: flex; justify-content: space-between; padding: 9px 0; font-size: 13px; border-bottom: 1px solid var(--border); }
+        .history-item-modal .date { color: var(--text-muted); }
+        .history-item-modal .pts { color: var(--primary); font-weight: 600; }
+
+        /* BACKUP */
+        .backup-btns { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 16px; }
+
+        /* NOTICE */
+        .permanent-notice { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: var(--primary); color: white; padding: 14px 26px; border-radius: var(--radius); box-shadow: 0 12px 32px rgba(0,0,0,0.2); z-index: 9998; font-weight: 500; font-size: 13px; max-width: 90%; text-align: center; letter-spacing: 0.3px; opacity: 0; pointer-events: none; transition: opacity 0.4s ease; }
+        .permanent-notice.show { opacity: 1; pointer-events: auto; }
+        .permanent-notice.fade-out { opacity: 0; transition: opacity 3s ease; }
+        .permanent-notice.error { background: var(--danger); }
+
+        .empty-text { color: var(--text-muted); padding: 24px 0; text-align: center; font-size: 13px; font-style: italic; }
+
+        @media (max-width: 700px) {
+            .topbar, .admin-header, .admin-tabs, .admin-main { padding-left: 16px; padding-right: 16px; }
+            .form-row, .form-row.triple { grid-template-columns: 1fr; }
+            .admin-header { flex-direction: column; height: auto; padding: 16px; gap: 12px; }
+            .admin-tabs { top: 0; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="permanent-notice" id="permanentNotice"><span id="noticeText"></span></div>
+
+<!-- LOGIN -->
+<div id="loginSection" class="login-wrap">
+    <div class="login-card">
+        <div class="login-logo"><img src="favicon-source.png" alt="Ramiz Köfte" /></div>
+        <h1>Yönetici Girişi</h1>
+        <div class="subtitle">Ramiz Köfte · Batman</div>
+        <div class="form-group"><label>Yönetici Telefonu</label><input type="tel" id="adminPhone" value="05515715272" autocomplete="tel" /></div>
+        <div class="form-group"><label>Şifre</label><input type="password" id="adminPassword" autocomplete="current-password" /></div>
+        <button class="btn-login" id="adminLoginBtn">Giriş Yap</button>
+        <div class="login-error" id="loginError"></div>
+        <div class="hint">İlk giriş: 05515715272 / admin123</div>
+        <div class="back-link"><a href="index.html">← Anasayfaya dön</a></div>
+    </div>
+</div>
+
+<!-- PANEL -->
+<div id="panelSection" style="display:none;">
+
+    <div class="topbar">
+        <div class="tb-left"><span>YÖNETİCİ PANELİ</span></div>
+        <div class="tb-right"><span id="currentTime"></span></div>
+    </div>
+
+    <header class="admin-header">
+        <div class="brand">
+            <div class="brand-logo"><img src="favicon-source.png" alt="Ramiz Köfte" /></div>
+            <div class="brand-text">Ramiz Köfte<small>Batman · Yönetim</small></div>
+        </div>
+        <div class="header-actions">
+            <button class="btn-ghost" onclick="location.href='index.html'">Siteyi Görüntüle</button>
+            <button class="btn-danger-ghost" id="logoutBtn">Çıkış</button>
+        </div>
+    </header>
+
+    <nav class="admin-tabs">
+        <button class="admin-tab-btn active" data-tab="tabMenu">Menü</button>
+        <button class="admin-tab-btn" data-tab="tabDeals">Fırsatlar</button>
+        <button class="admin-tab-btn" data-tab="tabNotif">Duyurular</button>
+        <button class="admin-tab-btn" data-tab="tabUsers">Kullanıcılar</button>
+        <button class="admin-tab-btn" data-tab="tabStats">İstatistik</button>
+        <button class="admin-tab-btn" data-tab="tabLogs">İşlem Kayıtları</button>
+        <button class="admin-tab-btn" data-tab="tabBackup">Yedekleme</button>
+        <button class="admin-tab-btn" data-tab="tabSettings">Ayarlar</button>
+    </nav>
+
+    <main class="admin-main">
+
+        <!-- MENÜ -->
+        <section id="tabMenu" class="admin-section active">
+            <div class="page-title">
+                <div class="eyebrow">Yönetim</div>
+                <h2>Menü Yönetimi</h2>
+            </div>
+            <div class="card">
+                <div class="card-head"><h3>Yeni Ürün Ekle</h3></div>
+                <div class="card-body">
+                    <div class="form-row">
+                        <div class="form-group"><label>Ürün Adı</label><input type="text" id="menuBaslik" /></div>
+                        <div class="form-group"><label>Kategori</label>
+                            <select id="menuKategori">
+                                <option value="Köfte">Köfte</option>
+                                <option value="Tavuk">Tavuk</option>
+                                <option value="İçecekler">İçecekler</option>
+                                <option value="Tatlılar">Tatlılar</option>
+                                <option value="Diğer">Diğer</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group"><label>Açıklama</label><textarea id="menuAciklama" rows="3"></textarea></div>
+                    <div class="form-row">
+                        <div class="form-group"><label>Fiyat (₺)</label><input type="text" id="menuFiyat" /></div>
+                        <div class="form-group"><label>İndirim Başlığı (opsiyonel)</label><input type="text" id="menuIndirimBaslik" /></div>
+                    </div>
+                    <div class="form-group"><label>İndirim Linki (opsiyonel)</label><input type="text" id="menuIndirimLink" /></div>
+                    <div class="form-group"><label>Ürün Görseli</label>
+                        <div class="photo-upload-area">
+                            <input type="text" id="menuResim" placeholder="Görsel URL veya dosya seç" />
+                            <button type="button" class="upload-btn" id="menuUploadBtn">Dosya Seç</button>
+                            <input type="file" id="menuFileInput" accept="image/*" style="display:none;" />
+                        </div>
+                        <div class="photo-preview" id="menuPhotoPreview"><img id="menuPreviewImg" /><button type="button" class="remove-photo" id="menuRemovePhoto">×</button></div>
+                        <div class="photo-info" id="menuPhotoInfo"></div>
+                    </div>
+                    <button class="btn-primary" id="menuEkleBtn">Ürünü Ekle</button>
+                    <div class="message" id="menuMessage"></div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-head"><h3>Mevcut Ürünler</h3><span class="count" id="menuCount">0 Kayıt</span></div>
+                <div class="card-body"><ul class="list-admin" id="menuListAdmin"><li class="empty-text">Yükleniyor...</li></ul></div>
+            </div>
+        </section>
+
+        <!-- FIRSAT -->
+        <section id="tabDeals" class="admin-section">
+            <div class="page-title">
+                <div class="eyebrow">Yönetim</div>
+                <h2>Fırsat Yönetimi</h2>
+            </div>
+            <div class="card">
+                <div class="card-head"><h3>Yeni Fırsat Ekle</h3></div>
+                <div class="card-body">
+                    <div class="form-group"><label>Başlık</label><input type="text" id="dealsBaslik" /></div>
+                    <div class="form-group"><label>Açıklama</label><textarea id="dealsAciklama" rows="3"></textarea></div>
+                    <div class="form-group"><label>Görsel</label>
+                        <div class="photo-upload-area">
+                            <input type="text" id="dealsResim" placeholder="Görsel URL veya dosya seç" />
+                            <button type="button" class="upload-btn" id="dealsUploadBtn">Dosya Seç</button>
+                            <input type="file" id="dealsFileInput" accept="image/*" style="display:none;" />
+                        </div>
+                        <div class="photo-preview" id="dealsPhotoPreview"><img id="dealsPreviewImg" /><button type="button" class="remove-photo" id="dealsRemovePhoto">×</button></div>
+                        <div class="photo-info" id="dealsPhotoInfo"></div>
+                    </div>
+                    <button class="btn-primary" id="dealsEkleBtn">Fırsatı Ekle</button>
+                    <div class="message" id="dealsMessage"></div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-head"><h3>Mevcut Fırsatlar</h3><span class="count" id="dealsCount">0 Kayıt</span></div>
+                <div class="card-body"><ul class="list-admin" id="dealsListAdmin"><li class="empty-text">Yükleniyor...</li></ul></div>
+            </div>
+        </section>
+
+        <!-- DUYURU -->
+        <section id="tabNotif" class="admin-section">
+            <div class="page-title">
+                <div class="eyebrow">Yönetim</div>
+                <h2>Duyuru Yönetimi</h2>
+            </div>
+            <div class="card">
+                <div class="card-head"><h3>Yeni Duyuru Gönder</h3></div>
+                <div class="card-body">
+                    <div class="form-group"><label>Başlık</label><input type="text" id="notifBaslik" placeholder="Örn: Bugün İndirim Var" /></div>
+                    <div class="form-group"><label>İçerik</label><textarea id="notifAciklama" rows="4" placeholder="Duyuru içeriği..."></textarea></div>
+                    <button class="btn-primary" id="notifSendBtn">Duyuruyu Gönder</button>
+                    <div class="message" id="notifMessage"></div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-head"><h3>Gönderilen Duyurular</h3><span class="count" id="notifCount">0 Kayıt</span></div>
+                <div class="card-body"><div id="notifList"><div class="empty-text">Henüz duyuru yok.</div></div></div>
+            </div>
+        </section>
+
+        <!-- KULLANICI -->
+        <section id="tabUsers" class="admin-section">
+            <div class="page-title">
+                <div class="eyebrow">Yönetim</div>
+                <h2>Kullanıcılar</h2>
+            </div>
+            <div class="card">
+                <div class="card-head"><h3>Kayıtlı Üyeler</h3><span class="count" id="userCount">0 Kayıt</span></div>
+                <div class="card-body">
+                    <div class="user-search">
+                        <input type="text" id="searchUserInput" placeholder="Telefon veya ad ile ara..." />
+                        <button class="btn-secondary" id="searchUserBtn">Ara</button>
+                    </div>
+                    <ul class="user-list" id="userList"><li class="empty-text">Yükleniyor...</li></ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- İSTATİSTİK -->
+        <section id="tabStats" class="admin-section">
+            <div class="page-title">
+                <div class="eyebrow">Analiz</div>
+                <h2>İstatistikler</h2>
+            </div>
+            <div class="card">
+                <div class="card-head"><h3>Genel Bakış</h3></div>
+                <div class="card-body"><div class="stats-grid" id="statsGrid"></div></div>
+            </div>
+            <div class="card">
+                <div class="card-head"><h3>En Çok Favorilenen Ürünler</h3></div>
+                <div class="card-body"><ul class="top-list" id="topFavorites"><li class="empty-text">Yükleniyor...</li></ul></div>
+            </div>
+            <div class="card">
+                <div class="card-head"><h3>En Çok Puan Toplayan Üyeler</h3></div>
+                <div class="card-body"><ul class="top-list" id="topUsers"><li class="empty-text">Yükleniyor...</li></ul></div>
+            </div>
+        </section>
+
+        <!-- LOG -->
+        <section id="tabLogs" class="admin-section">
+            <div class="page-title">
+                <div class="eyebrow">Denetim</div>
+                <h2>İşlem Kayıtları</h2>
+            </div>
+            <div class="card">
+                <div class="card-head"><h3>Son 100 İşlem</h3><span class="count">Kronolojik</span></div>
+                <div class="card-body"><ul class="log-list" id="logList"><li class="empty-text">Yükleniyor...</li></ul></div>
+            </div>
+        </section>
+
+        <!-- YEDEK -->
+        <section id="tabBackup" class="admin-section">
+            <div class="page-title">
+                <div class="eyebrow">Sistem</div>
+                <h2>Yedekleme ve Geri Yükleme</h2>
+            </div>
+            <div class="card">
+                <div class="card-head"><h3>JSON Yedek</h3></div>
+                <div class="card-body">
+                    <p style="color:var(--text-secondary); font-size:13.5px; margin-bottom:20px; line-height:1.65;">Tüm verileri (menü, fırsatlar, kullanıcılar, duyurular, admin) JSON olarak indirin veya geri yükleyin.</p>
+                    <div class="backup-btns">
+                        <button class="btn-primary" id="exportBtn">Yedek İndir</button>
+                        <button class="btn-secondary" id="importBtn">Yedek Yükle</button>
+                        <input type="file" id="importFile" accept=".json" style="display:none;" />
+                    </div>
+                    <div class="message" id="backupMessage"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- AYARLAR -->
+        <section id="tabSettings" class="admin-section">
+            <div class="page-title">
+                <div class="eyebrow">Güvenlik</div>
+                <h2>Yönetici Bilgileri</h2>
+            </div>
+            <div class="card">
+                <div class="card-head"><h3>Bilgileri Güncelle</h3></div>
+                <div class="card-body">
+                    <div class="form-group"><label>Yeni Telefon (boş bırakılırsa değişmez)</label><input type="tel" id="newAdminPhone" maxlength="11" /></div>
+                    <div class="form-group"><label>Mevcut Şifre</label><input type="password" id="currentPassword" /></div>
+                    <div class="form-row">
+                        <div class="form-group"><label>Yeni Şifre</label><input type="password" id="newPassword" /></div>
+                        <div class="form-group"><label>Yeni Şifre (Tekrar)</label><input type="password" id="newPasswordConfirm" /></div>
+                    </div>
+                    <button class="btn-primary" id="saveAdminBtn">Kaydet</button>
+                    <div class="message" id="adminMessage"></div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+</div>
+
+<!-- MODALLAR -->
+<div class="center-modal" id="pointsAddModal">
+    <div class="center-box">
+        <button class="close-x" id="pointsAddClose">×</button>
+        <h3>Puan Ekle</h3>
+        <div class="user-name" id="pointsAddUser"></div>
+        <div class="subtitle">Kural: 300 TL = 20 puan</div>
+        <input type="number" id="pointsAddInput" min="0" placeholder="TL cinsinden tutar" />
+        <div class="info" id="pointsAddInfo"></div>
+        <div class="btn-row">
+            <button class="btn-cancel" id="pointsAddCancel">İptal</button>
+            <button class="btn-confirm" id="pointsAddConfirm">Ekle</button>
+        </div>
+    </div>
+</div>
+
+<div class="center-modal" id="pointsRemoveModal">
+    <div class="center-box">
+        <button class="close-x" id="pointsRemoveClose">×</button>
+        <h3>Puan Sil</h3>
+        <div class="user-name" id="pointsRemoveUser"></div>
+        <div class="subtitle">Silinecek puan miktarı</div>
+        <input type="number" id="pointsRemoveInput" min="1" placeholder="Puan" />
+        <div class="info" id="pointsRemoveInfo"></div>
+        <div class="btn-row">
+            <button class="btn-cancel" id="pointsRemoveCancel">İptal</button>
+            <button class="btn-confirm" id="pointsRemoveConfirm">Sil</button>
+        </div>
+    </div>
+</div>
+
+<div class="center-modal" id="confirmModal">
+    <div class="center-box">
+        <div class="confirm-icon" id="confirmIcon">DİKKAT</div>
+        <h3 id="confirmTitle">Emin misiniz?</h3>
+        <div class="confirm-message" id="confirmMessage"></div>
+        <div class="btn-row">
+            <button class="btn-cancel" id="confirmCancel">Hayır</button>
+            <button class="btn-confirm btn-danger" id="confirmYes">Evet</button>
+        </div>
+    </div>
+</div>
+
+<div class="center-modal" id="userDetailModal">
+    <div class="center-box">
+        <button class="close-x" id="userDetailClose">×</button>
+        <h3>Kullanıcı Detayı</h3>
+        <div id="userDetailContent"></div>
+    </div>
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+    import { getFirestore, collection, doc, getDoc, getDocs, setDoc, deleteDoc, updateDoc } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyCmxCNThK6AFdyEP9Zj6E_6kEsHBLCfIAY",
+        authDomain: "ramiz-kofte.firebaseapp.com",
+        projectId: "ramiz-kofte",
+        storageBucket: "ramiz-kofte.firebasestorage.app",
+        messagingSenderId: "930378010869",
+        appId: "1:930378010869:web:cf08bee55f56cbcb7835bc"
+    };
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const $ = (id) => document.getElementById(id);
+    const DEFAULT_ADMIN_PHONE = '05515715272';
+    const DEFAULT_ADMIN_PASS = 'admin123';
+    let selectedAddPhone = null, selectedRemovePhone = null, confirmCallback = null;
+    let adminData = { telefon: DEFAULT_ADMIN_PHONE, sifre: DEFAULT_ADMIN_PASS };
+    let allUsersCache = [];
+
+    function isAdminLoggedIn() { return localStorage.getItem('ramiz_admin_session') === 'true'; }
+    function setAdminSession(status) { if (status) localStorage.setItem('ramiz_admin_session', 'true'); else localStorage.removeItem('ramiz_admin_session'); }
+
+    function showMessage(el, text, type = 'success') { el.textContent = text; el.className = `message show ${type}`; }
+    function hideMessage(el) { el.className = 'message'; el.textContent = ''; }
+
+    let noticeTimeout = null;
+    function showNotice(text, isSuccess = true) {
+        $('noticeText').textContent = text;
+        $('permanentNotice').classList.toggle('error', !isSuccess);
+        $('permanentNotice').classList.remove('fade-out');
+        $('permanentNotice').classList.add('show');
+        clearTimeout(noticeTimeout);
+        noticeTimeout = setTimeout(() => {
+            $('permanentNotice').classList.add('fade-out');
+            setTimeout(() => { $('permanentNotice').classList.remove('show'); $('permanentNotice').classList.remove('fade-out'); }, 3000);
+        }, 4000);
+    }
+
+    async function addLog(action) {
+        try {
+            const id = 'log_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6);
+            await setDoc(doc(db, 'ramiz_logs', id), { action, timestamp: Date.now() });
+        } catch { }
+    }
+
+    function showConfirm(title, message, onConfirm, options = {}) {
+        $('confirmTitle').textContent = title;
+        $('confirmMessage').textContent = message;
+        $('confirmIcon').textContent = options.icon || 'DİKKAT';
+        $('confirmYes').textContent = options.yesText || 'Evet';
+        confirmCallback = onConfirm;
+        $('confirmModal').classList.add('show');
+    }
+    $('confirmYes').addEventListener('click', () => { $('confirmModal').classList.remove('show'); const cb = confirmCallback; confirmCallback = null; if (cb) cb(); });
+    $('confirmCancel').addEventListener('click', () => { $('confirmModal').classList.remove('show'); confirmCallback = null; });
+
+    function switchTab(tabId) {
+        document.querySelectorAll('.admin-tab-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.tab === tabId));
+        document.querySelectorAll('.admin-section').forEach(sec => sec.classList.toggle('active', sec.id === tabId));
+        if (tabId === 'tabStats') renderStats();
+        if (tabId === 'tabLogs') renderLogs();
+        if (tabId === 'tabNotif') renderNotifs();
+    }
+
+    function handlePhotoSelect(file, urlInput, previewDiv, previewImg, infoDiv) {
+        if (!file) return;
+        if (!file.type.startsWith('image/')) { alert('Lütfen bir resim dosyası seçin.'); return; }
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const img = new Image();
+            img.onload = function() {
+                const MAX = 700;
+                let w = img.width, h = img.height;
+                if (w > h) { if (w > MAX) { h = Math.round(h * MAX / w); w = MAX; } }
+                else { if (h > MAX) { w = Math.round(w * MAX / h); h = MAX; } }
+                const canvas = document.createElement('canvas');
+                canvas.width = w; canvas.height = h;
+                canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+                const compressed = canvas.toDataURL('image/jpeg', 0.65);
+                urlInput.value = compressed;
+                previewImg.src = compressed;
+                previewDiv.classList.add('show');
+                const sizeKB = Math.round((compressed.length * 3 / 4) / 1024);
+                infoDiv.textContent = `Yüklendi · ${w}x${h}px · ~${sizeKB} KB`;
+            };
+            img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    }
+    function resetPhotoPreview(urlInput, previewDiv, infoDiv, fileInput) {
+        urlInput.value = ''; previewDiv.classList.remove('show'); infoDiv.textContent = ''; fileInput.value = '';
+    }
+
+    $('menuUploadBtn').addEventListener('click', () => $('menuFileInput').click());
+    $('menuFileInput').addEventListener('change', function() { handlePhotoSelect(this.files[0], $('menuResim'), $('menuPhotoPreview'), $('menuPreviewImg'), $('menuPhotoInfo')); });
+    $('menuRemovePhoto').addEventListener('click', () => resetPhotoPreview($('menuResim'), $('menuPhotoPreview'), $('menuPhotoInfo'), $('menuFileInput')));
+    $('dealsUploadBtn').addEventListener('click', () => $('dealsFileInput').click());
+    $('dealsFileInput').addEventListener('change', function() { handlePhotoSelect(this.files[0], $('dealsResim'), $('dealsPhotoPreview'), $('dealsPreviewImg'), $('dealsPhotoInfo')); });
+    $('dealsRemovePhoto').addEventListener('click', () => resetPhotoPreview($('dealsResim'), $('dealsPhotoPreview'), $('dealsPhotoInfo'), $('dealsFileInput')));
+
+    async function renderMenuAdmin() {
+        try {
+            const snap = await getDocs(collection(db, 'ramiz_menu'));
+            const arr = [];
+            snap.forEach(d => arr.push({ id: d.id, ...d.data() }));
+            $('menuCount').textContent = arr.length + ' Kayıt';
+            if (arr.length === 0) { $('menuListAdmin').innerHTML = '<li class="empty-text">Henüz ürün eklenmedi.</li>'; return; }
+            arr.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+            let html = '';
+            arr.forEach(item => {
+                const meta = [];
+                if (item.kategori) meta.push(`<span class="cat">${item.kategori}</span>`);
+                if (item.fiyat) meta.push(`<span class="price">₺${item.fiyat}</span>`);
+                if (item.indirimBaslik) meta.push(`<span style="color:var(--accent);">İndirim: ${item.indirimBaslik}</span>`);
+                html += `<li>
+                    <div class="item-row">
+                        <div class="item-main">
+                            <div class="item-baslik">${item.baslik}</div>
+                            ${item.aciklama ? `<div class="item-aciklama">${item.aciklama}</div>` : ''}
+                            <div class="item-meta">${meta.join('')}</div>
+                        </div>
+                        <button class="btn-delete" data-id="${item.id}">Sil</button>
+                    </div>
+                    ${item.resimUrl ? `<img src="${item.resimUrl}" alt="${item.baslik}" />` : ''}
+                </li>`;
+            });
+            $('menuListAdmin').innerHTML = html;
+            document.querySelectorAll('#menuListAdmin .btn-delete').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const id = this.dataset.id;
+                    const item = arr.find(x => x.id === id);
+                    showConfirm('Ürünü Sil', `"${item ? item.baslik : 'Bu ürün'}" kalıcı olarak silinecek. Onaylıyor musunuz?`, async () => {
+                        await deleteDoc(doc(db, 'ramiz_menu', id));
+                        await addLog('Menü silindi: ' + (item ? item.baslik : id));
+                        renderMenuAdmin();
+                        showNotice('Ürün silindi.');
+                    }, { yesText: 'Evet, Sil' });
+                });
+            });
+        } catch (e) { $('menuListAdmin').innerHTML = '<li class="empty-text">Hata: ' + e.message + '</li>'; }
+    }
+
+    async function handleMenuEkle() {
+        hideMessage($('menuMessage'));
+        const baslik = $('menuBaslik').value.trim();
+        const aciklama = $('menuAciklama').value.trim();
+        if (!baslik || !aciklama) { showMessage($('menuMessage'), 'Ürün adı ve açıklama zorunludur.', 'error'); return; }
+        try {
+            const id = 'm_' + Date.now();
+            await setDoc(doc(db, 'ramiz_menu', id), {
+                baslik, aciklama, kategori: $('menuKategori').value,
+                fiyat: $('menuFiyat').value.trim() || '', resimUrl: $('menuResim').value.trim() || '',
+                indirimBaslik: $('menuIndirimBaslik').value.trim() || '',
+                indirimLink: $('menuIndirimLink').value.trim() || '', createdAt: Date.now()
+            });
+            await addLog('Menü eklendi: ' + baslik);
+            $('menuBaslik').value = ''; $('menuAciklama').value = ''; $('menuFiyat').value = '';
+            $('menuIndirimBaslik').value = ''; $('menuIndirimLink').value = '';
+            resetPhotoPreview($('menuResim'), $('menuPhotoPreview'), $('menuPhotoInfo'), $('menuFileInput'));
+            showMessage($('menuMessage'), 'Ürün başarıyla eklendi.', 'success');
+            renderMenuAdmin();
+            showNotice('Ürün eklendi.');
+        } catch (e) { showMessage($('menuMessage'), 'Hata: ' + e.message, 'error'); }
+    }
+
+    async function renderDealsAdmin() {
+        try {
+            const snap = await getDocs(collection(db, 'ramiz_deals'));
+            const arr = [];
+            snap.forEach(d => arr.push({ id: d.id, ...d.data() }));
+            $('dealsCount').textContent = arr.length + ' Kayıt';
+            if (arr.length === 0) { $('dealsListAdmin').innerHTML = '<li class="empty-text">Henüz fırsat eklenmedi.</li>'; return; }
+            arr.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+            let html = '';
+            arr.forEach(d => {
+                html += `<li>
+                    <div class="item-row">
+                        <div class="item-main">
+                            <div class="item-baslik">${d.baslik}</div>
+                            ${d.aciklama ? `<div class="item-aciklama">${d.aciklama}</div>` : ''}
+                        </div>
+                        <button class="btn-delete" data-id="${d.id}">Sil</button>
+                    </div>
+                    ${d.resimUrl ? `<img src="${d.resimUrl}" alt="${d.baslik}" />` : ''}
+                </li>`;
+            });
+            $('dealsListAdmin').innerHTML = html;
+            document.querySelectorAll('#dealsListAdmin .btn-delete').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const id = this.dataset.id;
+                    const d = arr.find(x => x.id === id);
+                    showConfirm('Fırsatı Sil', `"${d ? d.baslik : 'Bu fırsat'}" kalıcı olarak silinecek. Onaylıyor musunuz?`, async () => {
+                        await deleteDoc(doc(db, 'ramiz_deals', id));
+                        await addLog('Fırsat silindi: ' + (d ? d.baslik : id));
+                        renderDealsAdmin();
+                        showNotice('Fırsat silindi.');
+                    }, { yesText: 'Evet, Sil' });
+                });
+            });
+        } catch { }
+    }
+
+    async function handleDealsEkle() {
+        hideMessage($('dealsMessage'));
+        const baslik = $('dealsBaslik').value.trim();
+        const aciklama = $('dealsAciklama').value.trim();
+        if (!baslik || !aciklama) { showMessage($('dealsMessage'), 'Başlık ve açıklama zorunludur.', 'error'); return; }
+        try {
+            const id = 'd_' + Date.now();
+            await setDoc(doc(db, 'ramiz_deals', id), { baslik, aciklama, resimUrl: $('dealsResim').value.trim() || '', createdAt: Date.now() });
+            await addLog('Fırsat eklendi: ' + baslik);
+            $('dealsBaslik').value = ''; $('dealsAciklama').value = '';
+            resetPhotoPreview($('dealsResim'), $('dealsPhotoPreview'), $('dealsPhotoInfo'), $('dealsFileInput'));
+            showMessage($('dealsMessage'), 'Fırsat başarıyla eklendi.', 'success');
+            renderDealsAdmin();
+            showNotice('Fırsat eklendi.');
+        } catch (e) { showMessage($('dealsMessage'), 'Hata: ' + e.message, 'error'); }
+    }
+
+    async function renderNotifs() {
+        try {
+            const snap = await getDocs(collection(db, 'ramiz_notifications'));
+            const arr = [];
+            snap.forEach(d => arr.push({ id: d.id, ...d.data() }));
+            arr.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+            $('notifCount').textContent = arr.length + ' Kayıt';
+            if (arr.length === 0) { $('notifList').innerHTML = '<div class="empty-text">Henüz duyuru yok.</div>'; return; }
+            let html = '';
+            arr.slice(0, 20).forEach(n => {
+                const date = new Date(n.createdAt).toLocaleString('tr-TR');
+                html += `<div class="notif-preview">
+                    <div class="n-title">${n.baslik}</div>
+                    <div class="n-text">${n.aciklama}</div>
+                    <div class="n-footer">
+                        <span class="n-date">${date}</span>
+                        <button class="n-delete" data-id="${n.id}">Sil</button>
+                    </div>
+                </div>`;
+            });
+            $('notifList').innerHTML = html;
+            document.querySelectorAll('.n-delete').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const id = this.dataset.id;
+                    showConfirm('Duyuruyu Sil', 'Bu duyuru kalıcı olarak silinecek. Onaylıyor musunuz?', async () => {
+                        await deleteDoc(doc(db, 'ramiz_notifications', id));
+                        await addLog('Duyuru silindi');
+                        renderNotifs();
+                        showNotice('Duyuru silindi.');
+                    }, { yesText: 'Evet, Sil' });
+                });
+            });
+        } catch { }
+    }
+
+    $('notifSendBtn').addEventListener('click', async () => {
+        hideMessage($('notifMessage'));
+        const baslik = $('notifBaslik').value.trim();
+        const aciklama = $('notifAciklama').value.trim();
+        if (!baslik || !aciklama) { showMessage($('notifMessage'), 'Başlık ve içerik zorunludur.', 'error'); return; }
+        try {
+            const id = 'n_' + Date.now();
+            await setDoc(doc(db, 'ramiz_notifications', id), { baslik, aciklama, createdAt: Date.now() });
+            await addLog('Duyuru gönderildi: ' + baslik);
+            $('notifBaslik').value = ''; $('notifAciklama').value = '';
+            showMessage($('notifMessage'), 'Duyuru gönderildi.', 'success');
+            renderNotifs();
+            showNotice('Duyuru gönderildi.');
+        } catch (e) { showMessage($('notifMessage'), 'Hata: ' + e.message, 'error'); }
+    });
+
+    async function renderLogs() {
+        try {
+            const snap = await getDocs(collection(db, 'ramiz_logs'));
+            const arr = [];
+            snap.forEach(d => arr.push({ id: d.id, ...d.data() }));
+            arr.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+            if (arr.length === 0) { $('logList').innerHTML = '<li class="empty-text">Henüz kayıt yok.</li>'; return; }
+            let html = '';
+            arr.slice(0, 100).forEach(l => {
+                const date = new Date(l.timestamp).toLocaleString('tr-TR', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' });
+                html += `<li><span class="log-action">${l.action}</span><span class="log-date">${date}</span></li>`;
+            });
+            $('logList').innerHTML = html;
+        } catch (e) { $('logList').innerHTML = '<li class="empty-text">Hata: ' + e.message + '</li>'; }
+    }
+
+    async function renderUsers(filter = '') {
+        try {
+            const snap = await getDocs(collection(db, 'ramiz_users'));
+            allUsersCache = [];
+            snap.forEach(d => allUsersCache.push({ telefon: d.id, ...d.data() }));
+            $('userCount').textContent = allUsersCache.length + ' Kayıt';
+            if (allUsersCache.length === 0) { $('userList').innerHTML = '<li class="empty-text">Henüz kullanıcı yok.</li>'; return; }
+            let filtered = allUsersCache;
+            if (filter.trim() !== '') {
+                const q = filter.trim().toLowerCase();
+                filtered = allUsersCache.filter(u => u.telefon.includes(q) || (u.adSoyad || '').toLowerCase().includes(q));
+            }
+            if (filtered.length === 0) { $('userList').innerHTML = '<li class="empty-text">Sonuç bulunamadı.</li>'; return; }
+            let html = '';
+            filtered.forEach(u => {
+                html += `<li>
+                    <div class="user-info" data-phone="${u.telefon}">
+                        <span class="name">${u.adSoyad || '—'}</span>
+                        <span class="phone">${u.telefon}</span>
+                        <span class="detail">${u.puan || 0} puan · ${(u.history || []).length} işlem · ${(u.favorites || []).length} favori</span>
+                    </div>
+                    <div class="user-actions">
+                        <button class="add-points-btn" data-phone="${u.telefon}">Puan Ekle</button>
+                        <button class="sub-points-btn" data-phone="${u.telefon}">Puan Sil</button>
+                        <button class="reset-btn" data-phone="${u.telefon}">Sıfırla</button>
+                        <button class="del-btn danger" data-phone="${u.telefon}">Sil</button>
+                    </div>
+                </li>`;
+            });
+            $('userList').innerHTML = html;
+            document.querySelectorAll('.user-info').forEach(el => el.addEventListener('click', () => openUserDetail(el.dataset.phone)));
+            document.querySelectorAll('.add-points-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    selectedAddPhone = this.dataset.phone;
+                    const u = allUsersCache.find(x => x.telefon === selectedAddPhone);
+                    $('pointsAddUser').textContent = (u ? u.adSoyad : '') + ' · ' + selectedAddPhone;
+                    $('pointsAddInput').value = ''; $('pointsAddInfo').textContent = '';
+                    $('pointsAddModal').classList.add('show');
+                });
+            });
+            document.querySelectorAll('.sub-points-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    selectedRemovePhone = this.dataset.phone;
+                    const u = allUsersCache.find(x => x.telefon === selectedRemovePhone);
+                    $('pointsRemoveUser').textContent = (u ? u.adSoyad : '') + ' · ' + selectedRemovePhone;
+                    $('pointsRemoveInfo').textContent = 'Mevcut: ' + (u ? u.puan || 0 : 0) + ' puan';
+                    $('pointsRemoveInput').value = '';
+                    $('pointsRemoveModal').classList.add('show');
+                });
+            });
+            document.querySelectorAll('.reset-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const phone = this.dataset.phone;
+                    showConfirm('Puanları Sıfırla', phone + ' numaralı kullanıcının tüm puanları ve geçmişi sıfırlanacak.', async () => {
+                        await updateDoc(doc(db, 'ramiz_users', phone), { puan: 0, history: [] });
+                        await addLog('Puanlar sıfırlandı: ' + phone);
+                        renderUsers($('searchUserInput').value);
+                        showNotice('Puanlar sıfırlandı.');
+                    }, { yesText: 'Evet, Sıfırla' });
+                });
+            });
+            document.querySelectorAll('.del-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const phone = this.dataset.phone;
+                    showConfirm('Kullanıcıyı Sil', phone + ' numaralı kullanıcı kalıcı olarak silinecek. Bu işlem geri alınamaz.', async () => {
+                        await deleteDoc(doc(db, 'ramiz_users', phone));
+                        await addLog('Kullanıcı silindi: ' + phone);
+                        renderUsers($('searchUserInput').value);
+                        showNotice('Kullanıcı silindi.');
+                    }, { yesText: 'Evet, Sil' });
+                });
+            });
+        } catch (e) { $('userList').innerHTML = '<li class="empty-text">Hata: ' + e.message + '</li>'; }
+    }
+
+    function openUserDetail(phone) {
+        const u = allUsersCache.find(x => x.telefon === phone);
+        if (!u) return;
+        const regDate = u.createdAt ? new Date(u.createdAt).toLocaleString('tr-TR') : '—';
+        const history = u.history || [];
+        let html = `
+            <div class="detail-row"><span class="label">Ad Soyad</span><span class="value">${u.adSoyad || '—'}</span></div>
+            <div class="detail-row"><span class="label">Telefon</span><span class="value">${u.telefon}</span></div>
+            <div class="detail-row"><span class="label">Puan</span><span class="value">${u.puan || 0}</span></div>
+            <div class="detail-row"><span class="label">Favori Sayısı</span><span class="value">${(u.favorites || []).length}</span></div>
+            <div class="detail-row"><span class="label">Kayıt Tarihi</span><span class="value">${regDate}</span></div>
+            <div class="detail-row"><span class="label">Toplam İşlem</span><span class="value">${history.length}</span></div>
+        `;
+        if (history.length > 0) {
+            html += `<div class="detail-subtitle">Son 10 İşlem</div>`;
+            [...history].reverse().slice(0, 10).forEach(h => {
+                const d = new Date(h.timestamp).toLocaleString('tr-TR', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' });
+                const sign = h.points >= 0 ? '+' : '';
+                html += `<div class="history-item-modal"><span class="date">${d}</span><span class="pts">${sign}${h.points}</span></div>`;
+            });
+        }
+        $('userDetailContent').innerHTML = html;
+        $('userDetailModal').classList.add('show');
+    }
+    $('userDetailClose').addEventListener('click', () => $('userDetailModal').classList.remove('show'));
+
+    $('pointsAddInput').addEventListener('input', function() {
+        const tl = parseFloat(this.value);
+        if (isNaN(tl) || tl < 300) { $('pointsAddInfo').textContent = tl ? 'En az 300 TL girilmelidir.' : ''; return; }
+        $('pointsAddInfo').textContent = 'Kazanılacak: ' + (Math.floor(tl / 300) * 20) + ' puan';
+    });
+    $('pointsAddConfirm').addEventListener('click', async () => {
+        if (!selectedAddPhone) return;
+        const tl = parseFloat($('pointsAddInput').value);
+        if (isNaN(tl) || tl < 300) { showNotice('En az 300 TL girilmelidir.', false); return; }
+        const points = Math.floor(tl / 300) * 20;
+        const ref = doc(db, 'ramiz_users', selectedAddPhone);
+        const snap = await getDoc(ref);
+        if (!snap.exists()) return;
+        const u = snap.data();
+        await updateDoc(ref, { puan: (u.puan || 0) + points, history: [...(u.history || []), { points, timestamp: Date.now() }] });
+        await addLog('Puan eklendi: ' + selectedAddPhone + ' → +' + points);
+        $('pointsAddModal').classList.remove('show');
+        renderUsers($('searchUserInput').value);
+        showNotice(points + ' puan eklendi.');
+    });
+    $('pointsAddCancel').addEventListener('click', () => $('pointsAddModal').classList.remove('show'));
+    $('pointsAddClose').addEventListener('click', () => $('pointsAddModal').classList.remove('show'));
+
+    $('pointsRemoveInput').addEventListener('input', function() {
+        const pts = parseInt(this.value);
+        if (isNaN(pts) || pts < 1) { $('pointsRemoveInfo').textContent = ''; return; }
+        $('pointsRemoveInfo').textContent = pts + ' puan silinecek';
+    });
+    $('pointsRemoveConfirm').addEventListener('click', async () => {
+        if (!selectedRemovePhone) return;
+        const pts = parseInt($('pointsRemoveInput').value);
+        if (isNaN(pts) || pts < 1) { showNotice('Geçerli bir puan girin.', false); return; }
+        const ref = doc(db, 'ramiz_users', selectedRemovePhone);
+        const snap = await getDoc(ref);
+        if (!snap.exists()) return;
+        const u = snap.data();
+        if ((u.puan || 0) < pts) { showNotice('Kullanıcının yeterli puanı yok.', false); return; }
+        await updateDoc(ref, { puan: (u.puan || 0) - pts, history: [...(u.history || []), { points: -pts, timestamp: Date.now() }] });
+        await addLog('Puan silindi: ' + selectedRemovePhone + ' → -' + pts);
+        $('pointsRemoveModal').classList.remove('show');
+        renderUsers($('searchUserInput').value);
+        showNotice(pts + ' puan silindi.');
+    });
+    $('pointsRemoveCancel').addEventListener('click', () => $('pointsRemoveModal').classList.remove('show'));
+    $('pointsRemoveClose').addEventListener('click', () => $('pointsRemoveModal').classList.remove('show'));
+
+    async function renderStats() {
+        try {
+            const usersSnap = await getDocs(collection(db, 'ramiz_users'));
+            const menuSnap = await getDocs(collection(db, 'ramiz_menu'));
+            const dealsSnap = await getDocs(collection(db, 'ramiz_deals'));
+            const users = [], menu = [], deals = [];
+            usersSnap.forEach(d => users.push(d.data()));
+            menuSnap.forEach(d => menu.push({ id: d.id, ...d.data() }));
+            dealsSnap.forEach(d => deals.push(d.data()));
+            const now = new Date();
+            const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
+            const weekStart = todayStart - 6 * 24 * 60 * 60 * 1000;
+            const todayCount = users.filter(u => u.createdAt && u.createdAt >= todayStart).length;
+            const weekCount = users.filter(u => u.createdAt && u.createdAt >= weekStart).length;
+            const totalPoints = users.reduce((sum, u) => sum + (u.puan || 0), 0);
+            const favCounts = {};
+            users.forEach(u => (u.favorites || []).forEach(id => { favCounts[id] = (favCounts[id] || 0) + 1; }));
+            const topFavs = Object.entries(favCounts).sort((a, b) => b[1] - a[1]).slice(0, 5);
+            const topUsers = users.map(u => ({ adSoyad: u.adSoyad, puan: u.puan || 0 })).sort((a, b) => b.puan - a.puan).slice(0, 5);
+
+            $('statsGrid').innerHTML = `
+                <div class="stat-card"><div class="stat-icon">Toplam Üye</div><div class="stat-value">${users.length}</div><div class="stat-label">Kayıtlı kullanıcı</div></div>
+                <div class="stat-card"><div class="stat-icon">Bugün Kayıt</div><div class="stat-value">${todayCount}</div><div class="stat-label">Son 24 saat</div></div>
+                <div class="stat-card"><div class="stat-icon">Bu Hafta</div><div class="stat-value">${weekCount}</div><div class="stat-label">Son 7 gün</div></div>
+                <div class="stat-card"><div class="stat-icon">Toplam Puan</div><div class="stat-value">${totalPoints}</div><div class="stat-label">Dağıtılan puan</div></div>
+                <div class="stat-card"><div class="stat-icon">Menü</div><div class="stat-value">${menu.length}</div><div class="stat-label">Aktif ürün</div></div>
+                <div class="stat-card"><div class="stat-icon">Fırsatlar</div><div class="stat-value">${deals.length}</div><div class="stat-label">Aktif kampanya</div></div>
+            `;
+
+            if (topFavs.length === 0) { $('topFavorites').innerHTML = '<li class="empty-text">Henüz veri yok.</li>'; }
+            else {
+                let html = '';
+                topFavs.forEach(([id, count], i) => {
+                    const item = menu.find(m => m.id === id);
+                    const cls = i === 0 ? 'gold' : i === 1 ? 'silver' : i === 2 ? 'bronze' : '';
+                    html += `<li><span class="rank ${cls}">${i + 1}.</span><span class="name">${item ? item.baslik : 'Silinmiş ürün'}</span><span class="count">${count} favori</span></li>`;
+                });
+                $('topFavorites').innerHTML = html;
+            }
+            if (topUsers.length === 0) { $('topUsers').innerHTML = '<li class="empty-text">Henüz veri yok.</li>'; }
+            else {
+                let html = '';
+                topUsers.forEach((u, i) => {
+                    const cls = i === 0 ? 'gold' : i === 1 ? 'silver' : i === 2 ? 'bronze' : '';
+                    html += `<li><span class="rank ${cls}">${i + 1}.</span><span class="name">${u.adSoyad || '—'}</span><span class="count">${u.puan} puan</span></li>`;
+                });
+                $('topUsers').innerHTML = html;
+            }
+        } catch (e) { console.error(e); }
+    }
+
+    $('exportBtn').addEventListener('click', async () => {
+        try {
+            const data = { exportDate: Date.now(), menu: [], deals: [], users: [], notifications: [], admin: adminData };
+            const ms = await getDocs(collection(db, 'ramiz_menu')); ms.forEach(d => data.menu.push({ id: d.id, ...d.data() }));
+            const ds = await getDocs(collection(db, 'ramiz_deals')); ds.forEach(d => data.deals.push({ id: d.id, ...d.data() }));
+            const us = await getDocs(collection(db, 'ramiz_users')); us.forEach(d => data.users.push({ telefon: d.id, ...d.data() }));
+            const ns = await getDocs(collection(db, 'ramiz_notifications')); ns.forEach(d => data.notifications.push({ id: d.id, ...d.data() }));
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a'); a.href = url;
+            a.download = 'ramiz-kofte-yedek-' + new Date().toISOString().slice(0, 10) + '.json'; a.click();
+            URL.revokeObjectURL(url);
+            showMessage($('backupMessage'), 'Yedek indirildi.', 'success');
+        } catch (e) { showMessage($('backupMessage'), 'Hata: ' + e.message, 'error'); }
+    });
+    $('importBtn').addEventListener('click', () => $('importFile').click());
+    $('importFile').addEventListener('change', async function() {
+        const file = this.files[0]; if (!file) return;
+        const reader = new FileReader();
+        reader.onload = async function(e) {
+            try {
+                const data = JSON.parse(e.target.result);
+                showConfirm('Yedekten Yükle', 'Mevcut veriler yedekten gelen verilerle birleştirilecek. Onaylıyor musunuz?', async () => {
+                    let count = 0;
+                    if (data.menu) for (const item of data.menu) { const { id, ...rest } = item; await setDoc(doc(db, 'ramiz_menu', id), rest); count++; }
+                    if (data.deals) for (const item of data.deals) { const { id, ...rest } = item; await setDoc(doc(db, 'ramiz_deals', id), rest); count++; }
+                    if (data.users) for (const u of data.users) { const { telefon, ...rest } = u; await setDoc(doc(db, 'ramiz_users', telefon), rest); count++; }
+                    if (data.notifications) for (const n of data.notifications) { const { id, ...rest } = n; await setDoc(doc(db, 'ramiz_notifications', id), rest); count++; }
+                    if (data.admin) { await setDoc(doc(db, 'ramiz_config', 'admin'), data.admin); }
+                    await addLog('Yedek yüklendi: ' + count + ' kayıt');
+                    renderMenuAdmin(); renderDealsAdmin(); renderUsers('');
+                    showMessage($('backupMessage'), count + ' kayıt yüklendi.', 'success');
+                }, { yesText: 'Evet, Yükle' });
+            } catch (e) { showMessage($('backupMessage'), 'Dosya okunamadı.', 'error'); }
+        };
+        reader.readAsText(file);
+        this.value = '';
+    });
+
+    $('saveAdminBtn').addEventListener('click', async () => {
+        hideMessage($('adminMessage'));
+        const newPhone = $('newAdminPhone').value.trim();
+        const currentPass = $('currentPassword').value.trim();
+        const newPass = $('newPassword').value.trim();
+        const newPassConfirm = $('newPasswordConfirm').value.trim();
+        if (currentPass !== adminData.sifre) { showMessage($('adminMessage'), 'Mevcut şifre hatalı.', 'error'); return; }
+        if (newPass && newPass.length < 4) { showMessage($('adminMessage'), 'Yeni şifre en az 4 karakter olmalı.', 'error'); return; }
+        if (newPass && newPass !== newPassConfirm) { showMessage($('adminMessage'), 'Şifreler uyuşmuyor.', 'error'); return; }
+        if (!newPhone && !newPass) { showMessage($('adminMessage'), 'Değişiklik yapmadınız.', 'error'); return; }
+        const updated = { ...adminData };
+        if (newPhone) updated.telefon = newPhone;
+        if (newPass) updated.sifre = newPass;
+        try {
+            await setDoc(doc(db, 'ramiz_config', 'admin'), updated);
+            await addLog('Admin bilgileri güncellendi');
+            adminData = updated;
+            showMessage($('adminMessage'), 'Bilgiler güncellendi.', 'success');
+            $('newAdminPhone').value = ''; $('currentPassword').value = ''; $('newPassword').value = ''; $('newPasswordConfirm').value = '';
+        } catch (e) { showMessage($('adminMessage'), 'Hata: ' + e.message, 'error'); }
+    });
+
+    async function login() {
+        const phone = $('adminPhone').value.trim();
+        const pass = $('adminPassword').value.trim();
+        try {
+            const cfgRef = doc(db, 'ramiz_config', 'admin');
+            const cfgSnap = await getDoc(cfgRef);
+            if (!cfgSnap.exists()) {
+                adminData = { telefon: DEFAULT_ADMIN_PHONE, sifre: DEFAULT_ADMIN_PASS };
+                await setDoc(cfgRef, adminData);
+            } else adminData = cfgSnap.data();
+            if (phone === adminData.telefon && pass === adminData.sifre) {
+                setAdminSession(true);
+                $('loginError').classList.remove('show');
+                $('loginSection').style.display = 'none';
+                $('panelSection').style.display = 'block';
+                await addLog('Admin giriş yaptı');
+                await renderMenuAdmin();
+                await renderDealsAdmin();
+                await renderUsers('');
+                startAutoRefresh();
+            } else {
+                $('loginError').textContent = 'Hatalı telefon veya şifre.';
+                $('loginError').classList.add('show');
+                setTimeout(() => $('loginError').classList.remove('show'), 3000);
+            }
+        } catch (e) { $('loginError').textContent = 'Hata: ' + e.message; $('loginError').classList.add('show'); }
+    }
+
+    function logout() {
+        setAdminSession(false);
+        stopAutoRefresh();
+        $('loginSection').style.display = 'flex';
+        $('panelSection').style.display = 'none';
+    }
+
+    $('adminLoginBtn').addEventListener('click', login);
+    $('logoutBtn').addEventListener('click', logout);
+    $('menuEkleBtn').addEventListener('click', handleMenuEkle);
+    $('dealsEkleBtn').addEventListener('click', handleDealsEkle);
+    $('searchUserBtn').addEventListener('click', () => renderUsers($('searchUserInput').value));
+    $('searchUserInput').addEventListener('keyup', (e) => { if (e.key === 'Enter') renderUsers($('searchUserInput').value); });
+
+    document.querySelectorAll('.admin-tab-btn').forEach(btn => btn.addEventListener('click', function() { switchTab(this.dataset.tab); }));
+
+    let autoRefreshInterval = null;
+    function startAutoRefresh() {
+        stopAutoRefresh();
+        autoRefreshInterval = setInterval(async () => {
+            if (!isAdminLoggedIn()) return;
+            try {
+                const activeTab = document.querySelector('.admin-tab-btn.active');
+                if (!activeTab) return;
+                const t = activeTab.dataset.tab;
+                if (t === 'tabMenu') await renderMenuAdmin();
+                if (t === 'tabDeals') await renderDealsAdmin();
+                if (t === 'tabUsers') await renderUsers($('searchUserInput').value);
+                if (t === 'tabStats') await renderStats();
+                if (t === 'tabLogs') await renderLogs();
+                if (t === 'tabNotif') await renderNotifs();
+            } catch (e) { console.error('Auto refresh hatası:', e); }
+        }, 3000);
+    }
+    function stopAutoRefresh() {
+        if (autoRefreshInterval) { clearInterval(autoRefreshInterval); autoRefreshInterval = null; }
+    }
+
+    function updateClock() {
+        const now = new Date();
+        $('currentTime').textContent = now.toLocaleString('tr-TR', { day: '2-digit', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+    }
+    setInterval(updateClock, 30000);
+    updateClock();
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') ['pointsAddModal','pointsRemoveModal','confirmModal','userDetailModal'].forEach(id => $(id).classList.remove('show'));
+        if (e.key === 'Enter' && $('loginSection').style.display !== 'none') {
+            if (document.activeElement === $('adminPhone') || document.activeElement === $('adminPassword')) login();
+        }
+    });
+
+    async function autoLogin() {
+        if (!isAdminLoggedIn()) return;
+        try {
+            const cfgRef = doc(db, 'ramiz_config', 'admin');
+            const cfgSnap = await getDoc(cfgRef);
+            if (cfgSnap.exists()) adminData = cfgSnap.data();
+            $('loginSection').style.display = 'none';
+            $('panelSection').style.display = 'block';
+            await renderMenuAdmin();
+            await renderDealsAdmin();
+            await renderUsers('');
+            startAutoRefresh();
+        } catch (e) { console.error('Otomatik giriş hatası:', e); }
+    }
+    autoLogin();
+
+    console.log('Ramiz Köfte Yönetici Paneli hazır.');
+</script>
+</body>
+</html>

@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ramiz Köfte | Batman</title>
+    <meta name="description" content="Ramiz Köfte Batman - 1928'den beri Akhisar'ın lezzet geleneği." />
+    <meta name="theme-color" content="#0f2818" />
+    <meta property="og:title" content="Ramiz Köfte | Batman" />
+    <meta property="og:description" content="1928'den beri Akhisar'ın lezzet geleneği, Batman'da sofranızda." />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="favicon-source.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="manifest" href="site.webmanifest">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet" />
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary: #0f2818; --primary-hover: #1a3d26; --accent: #8b6f47; --accent-hover: #6d5637;
+            --bg: #f5f2ed; --surface: #ffffff; --surface-alt: #efece6;
+            --text: #14110d; --text-secondary: #4a463f; --text-muted: #8a8579;
+            --border: #e0dcd3; --border-strong: #c9c4b8; --danger: #a8322d;
+            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-serif: 'Playfair Display', Georgia, serif;
+            --radius: 4px; --radius-lg: 8px;
+        }
+        body.dark {
+            --primary: #4a9d6e; --primary-hover: #6ab88a; --accent: #c9a877; --accent-hover: #d9b888;
+            --bg: #0d100e; --surface: #161a17; --surface-alt: #1e231f;
+            --text: #ede9e2; --text-secondary: #b3ada3; --text-muted: #6b6660;
+            --border: #262b27; --border-strong: #3a403b;
+        }
+        html { scroll-behavior: smooth; }
+        body { font-family: var(--font-sans); background: var(--bg); color: var(--text); min-height: 100vh; transition: background 0.2s, color 0.2s; -webkit-font-smoothing: antialiased; line-height: 1.55; font-size: 15px; }
+        a { text-decoration: none; color: inherit; }
+
+        .topbar { background: var(--primary); color: rgba(255,255,255,0.85); font-size: 12px; letter-spacing: 0.4px; padding: 9px 40px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+        body.dark .topbar { background: #050806; }
+        .topbar .tb-left, .topbar .tb-right { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+        .topbar .tb-item { display: flex; align-items: center; gap: 6px; color: inherit; transition: 0.15s; }
+        .topbar .tb-item:hover { color: white; }
+        .topbar svg { width: 12px; height: 12px; opacity: 0.7; }
+
+        .header { background: var(--surface); padding: 0 40px; height: 76px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; flex-wrap: wrap; gap: 16px; }
+        .logo { display: flex; align-items: center; gap: 14px; cursor: pointer; }
+        .logo-icon { width: 48px; height: 48px; border-radius: 50%; overflow: hidden; display: flex; align-items: center; justify-content: center; border: 1px solid var(--border-strong); background: var(--surface); flex-shrink: 0; }
+        .logo-icon img { width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 50%; transform: scale(1.2); }
+        .logo-text { font-family: var(--font-serif); font-size: 22px; font-weight: 600; color: var(--text); line-height: 1.05; letter-spacing: 0.2px; }
+        .logo-text small { display: block; font-family: var(--font-sans); font-size: 10px; font-weight: 500; color: var(--text-muted); letter-spacing: 2px; text-transform: uppercase; margin-top: 3px; }
+        .nav-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+
+        .point-badge { background: transparent; color: var(--primary); border: 1px solid var(--border-strong); padding: 9px 16px; border-radius: var(--radius); font-weight: 600; font-size: 12px; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: 0.15s; font-family: inherit; letter-spacing: 0.5px; text-transform: uppercase; }
+        .point-badge:hover { background: var(--primary); color: white; border-color: var(--primary); }
+        body.dark .point-badge { color: var(--primary); border-color: var(--border-strong); }
+
+        .btn-login { background: var(--primary); border: 1px solid var(--primary); color: white; padding: 10px 22px; border-radius: var(--radius); font-weight: 600; font-size: 12px; cursor: pointer; transition: 0.15s; font-family: inherit; letter-spacing: 0.6px; text-transform: uppercase; }
+        .btn-login:hover { background: var(--primary-hover); border-color: var(--primary-hover); }
+        .btn-login.hidden { display: none; }
+
+        .btn-notif, .settings-btn { background: transparent; border: 1px solid var(--border); color: var(--text-secondary); width: 40px; height: 40px; border-radius: var(--radius); cursor: pointer; transition: 0.15s; display: flex; align-items: center; justify-content: center; font-family: inherit; position: relative; }
+        .btn-notif:hover, .settings-btn:hover { border-color: var(--primary); color: var(--primary); }
+        .btn-notif svg, .settings-btn svg { width: 15px; height: 15px; }
+        .btn-notif .badge { position: absolute; top: -5px; right: -5px; background: var(--danger); color: white; font-size: 9px; font-weight: 700; min-width: 16px; height: 16px; border-radius: 8px; display: flex; align-items: center; justify-content: center; padding: 0 4px; border: 1.5px solid var(--surface); }
+        .btn-notif .badge.hidden { display: none; }
+
+        .settings-dropdown { position: relative; display: inline-block; }
+        .settings-dropdown-content { display: none; position: absolute; right: 0; top: 50px; background: var(--surface); min-width: 240px; border-radius: var(--radius-lg); border: 1px solid var(--border); box-shadow: 0 12px 32px rgba(0,0,0,0.08); z-index: 200; padding: 6px; }
+        .settings-dropdown-content.show { display: block; }
+        .settings-dropdown-content a { display: flex; justify-content: space-between; align-items: center; padding: 11px 14px; color: var(--text); font-weight: 500; font-size: 13px; cursor: pointer; border-radius: var(--radius); transition: 0.15s; }
+        .settings-dropdown-content a:hover { background: var(--surface-alt); }
+        .settings-dropdown-content a .menu-label { display: flex; align-items: center; gap: 10px; }
+        .settings-dropdown-content a .menu-label svg { width: 14px; height: 14px; stroke: var(--text-secondary); }
+        .settings-dropdown-content a .menu-value { font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px; text-transform: uppercase; font-weight: 600; }
+        .settings-dropdown-content .logout-item { color: var(--danger); border-top: 1px solid var(--border); margin-top: 4px; padding-top: 10px; border-radius: 0 0 var(--radius) var(--radius); }
+
+        .notif-panel { position: fixed; top: 100px; right: 30px; background: var(--surface); width: 380px; max-height: 70vh; border-radius: var(--radius-lg); border: 1px solid var(--border); box-shadow: 0 20px 48px rgba(0,0,0,0.10); z-index: 300; display: none; overflow: hidden; }
+        .notif-panel.show { display: block; animation: notifPop 0.2s ease; }
+        @keyframes notifPop { from { transform: translateY(-6px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .notif-panel h4 { padding: 18px 22px; font-size: 13px; color: var(--text); border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+        .notif-panel h4 button { background: none; border: none; font-size: 20px; cursor: pointer; color: var(--text-muted); font-family: inherit; line-height: 1; }
+        .notif-list { max-height: 60vh; overflow-y: auto; padding: 12px; }
+        .notif-item { background: var(--surface-alt); border-radius: var(--radius); padding: 14px 16px; margin-bottom: 8px; border: 1px solid var(--border); }
+        .notif-item .baslik { font-weight: 600; color: var(--text); font-size: 14px; margin-bottom: 4px; }
+        .notif-item .aciklama { color: var(--text-secondary); font-size: 13px; line-height: 1.55; }
+        .notif-item .date { color: var(--text-muted); font-size: 11px; margin-top: 6px; display: block; letter-spacing: 0.3px; }
+
+        .hero { position: relative; padding: 90px 40px; text-align: center; overflow: hidden; background-image: url('hero.jpeg'); background-size: cover; background-position: center; background-repeat: no-repeat; background-color: var(--primary); }
+        .hero::before { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(8,20,14,0.78) 0%, rgba(8,20,14,0.55) 55%, rgba(8,20,14,0.85) 100%); z-index: 1; }
+        .hero-content { position: relative; z-index: 2; max-width: 720px; margin: 0 auto; }
+        .hero .hero-eyebrow { font-size: 11px; font-weight: 500; letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,0.7); margin-bottom: 16px; }
+        .hero h1 { font-family: var(--font-serif); font-size: 54px; font-weight: 500; letter-spacing: -0.5px; margin-bottom: 16px; color: white; line-height: 1.05; }
+        .hero p { font-size: 16px; max-width: 500px; margin: 0 auto 32px; font-weight: 400; color: rgba(255,255,255,0.85); line-height: 1.6; }
+        .hero .btn-hero { background: white; color: var(--primary); padding: 15px 38px; border: none; border-radius: var(--radius); font-weight: 600; font-size: 12px; cursor: pointer; transition: 0.2s; font-family: inherit; letter-spacing: 1.2px; text-transform: uppercase; }
+        .hero .btn-hero:hover { background: var(--accent); color: white; }
+        .divider-ornament { display: flex; align-items: center; justify-content: center; gap: 12px; margin: 0 auto 26px; max-width: 180px; }
+        .divider-ornament::before, .divider-ornament::after { content: ""; flex: 1; height: 1px; background: rgba(255,255,255,0.25); }
+        .divider-ornament span { color: rgba(255,255,255,0.5); font-size: 13px; letter-spacing: 3px; }
+
+        .order-modal { position: fixed; inset: 0; background: rgba(8,20,14,0.7); backdrop-filter: blur(6px); z-index: 1001; display: none; align-items: center; justify-content: center; padding: 20px; }
+        .order-modal.show { display: flex; }
+        .order-box { background: var(--surface); border-radius: var(--radius-lg); padding: 40px 36px; max-width: 440px; width: 100%; position: relative; border: 1px solid var(--border); }
+        .order-box .close-order { position: absolute; right: 18px; top: 16px; background: none; border: none; font-size: 22px; cursor: pointer; color: var(--text-muted); font-family: inherit; line-height: 1; }
+        .order-box h2 { font-family: var(--font-serif); font-size: 28px; color: var(--text); margin-bottom: 8px; text-align: center; font-weight: 600; }
+        .order-box .subtitle { text-align: center; color: var(--text-muted); font-size: 13px; margin-bottom: 30px; letter-spacing: 0.3px; }
+        .order-options { display: flex; flex-direction: column; gap: 10px; }
+        .order-option { display: flex; align-items: center; justify-content: space-between; padding: 18px 24px; border-radius: var(--radius); color: white; font-weight: 500; font-size: 14px; letter-spacing: 0.3px; transition: 0.15s; cursor: pointer; }
+        .order-option:hover { opacity: 0.92; }
+        .order-option.ys { background: #ea1d2c; }
+        .order-option.migros { background: #004f9f; }
+        .order-option.telefon { background: var(--primary); }
+        .order-option .arrow { font-size: 16px; opacity: 0.7; }
+
+        .main-wrapper { display: flex; gap: 32px; padding: 56px 40px 60px; max-width: 1360px; margin: 0 auto; }
+        .filter-sidebar { flex: 0 0 260px; background: var(--surface); border-radius: var(--radius-lg); padding: 24px; border: 1px solid var(--border); height: fit-content; position: sticky; top: 100px; }
+        .filter-sidebar h4 { font-size: 11px; color: var(--text); margin-bottom: 18px; border-bottom: 1px solid var(--border); padding-bottom: 12px; text-transform: uppercase; letter-spacing: 2px; font-weight: 600; }
+        .filter-group { margin-bottom: 22px; }
+        .filter-group > label { font-weight: 500; color: var(--text-secondary); display: block; margin-bottom: 10px; font-size: 12px; text-transform: uppercase; letter-spacing: 0.8px; }
+        .price-row { display: flex; gap: 8px; align-items: center; }
+        .price-row input { flex: 1; width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: var(--radius); font-size: 14px; background: var(--surface); font-family: inherit; color: var(--text); transition: 0.15s; }
+        .price-row input:focus { outline: none; border-color: var(--primary); }
+        .price-row span { color: var(--text-muted); font-weight: 400; }
+        .checkbox-list { display: flex; flex-direction: column; gap: 2px; }
+        .checkbox-list label { display: flex; align-items: center; gap: 10px; cursor: pointer; font-size: 13px; font-weight: 400; color: var(--text); padding: 7px 8px; border-radius: var(--radius); transition: 0.15s; }
+        .checkbox-list label:hover { background: var(--surface-alt); }
+        .checkbox-list input[type="checkbox"] { width: 15px; height: 15px; accent-color: var(--primary); cursor: pointer; }
+        .filter-sidebar .btn-filter { width: 100%; padding: 12px; background: var(--primary); color: white; border: none; border-radius: var(--radius); font-weight: 600; font-size: 12px; cursor: pointer; transition: 0.15s; margin-bottom: 8px; font-family: inherit; letter-spacing: 1px; text-transform: uppercase; }
+        .filter-sidebar .btn-filter:hover { background: var(--primary-hover); }
+        .filter-sidebar .btn-reset { background: transparent; color: var(--text-secondary); border: 1px solid var(--border); }
+        .filter-sidebar .btn-reset:hover { background: var(--surface-alt); color: var(--text); }
+
+        .content-area { flex: 1; min-width: 0; }
+        .tabs { display: flex; gap: 0; background: transparent; border-radius: 0; padding: 0; border: none; margin-bottom: 32px; flex-wrap: wrap; border-bottom: 1px solid var(--border); }
+        .tab-btn { padding: 14px 26px; border: none; background: transparent; border-radius: 0; font-weight: 500; font-size: 12px; color: var(--text-muted); cursor: pointer; transition: 0.15s; flex: 1; text-align: center; min-width: 100px; font-family: inherit; letter-spacing: 1.5px; text-transform: uppercase; border-bottom: 2px solid transparent; margin-bottom: -1px; }
+        .tab-btn.active { color: var(--primary); border-bottom-color: var(--primary); font-weight: 600; }
+        .tab-btn:hover:not(.active) { color: var(--text); }
+        .section { display: none; }
+        .section.active { display: block; }
+
+        .menu-toolbar { display: flex; gap: 12px; margin-bottom: 28px; flex-wrap: wrap; }
+        .search-box { flex: 1; min-width: 200px; position: relative; }
+        .search-box input { width: 100%; padding: 13px 20px 13px 44px; border: 1px solid var(--border); border-radius: var(--radius); font-size: 14px; font-family: inherit; background: var(--surface); color: var(--text); transition: 0.15s; }
+        .search-box input:focus { outline: none; border-color: var(--primary); }
+        .search-box::before { content: ""; position: absolute; left: 16px; top: 50%; transform: translateY(-50%); width: 15px; height: 15px; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238a8579' stroke-width='2'><circle cx='11' cy='11' r='7'/><path d='M21 21l-4.35-4.35'/></svg>"); background-size: contain; pointer-events: none; }
+        .sort-select { padding: 13px 40px 13px 16px; border: 1px solid var(--border); border-radius: var(--radius); font-size: 13px; font-family: inherit; background: var(--surface); cursor: pointer; font-weight: 500; color: var(--text); min-width: 220px; appearance: none; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='%238a8579'><path d='M7 10l5 5 5-5z'/></svg>"); background-repeat: no-repeat; background-position: right 16px center; transition: 0.15s; }
+        .sort-select:focus { outline: none; border-color: var(--primary); }
+
+        .menu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px; }
+        .menu-card { background: var(--surface); border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border); transition: 0.25s; display: flex; flex-direction: column; position: relative; }
+        .menu-card:hover { border-color: var(--border-strong); box-shadow: 0 6px 24px rgba(0,0,0,0.06); }
+        .menu-card .menu-img { width: 100%; height: 200px; object-fit: cover; background: var(--surface-alt); display: block; }
+        .menu-card .menu-img.loading { filter: blur(8px); }
+        .menu-card .menu-body { padding: 20px 22px 22px; flex: 1; display: flex; flex-direction: column; }
+        .menu-card .menu-title { font-family: var(--font-serif); font-size: 20px; font-weight: 600; color: var(--text); margin-bottom: 6px; line-height: 1.25; letter-spacing: -0.2px; }
+        .menu-card .menu-category { font-size: 10px; color: var(--accent); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1.8px; font-weight: 600; }
+        .menu-card .menu-desc { font-size: 13.5px; color: var(--text-secondary); margin-bottom: 16px; flex: 1; line-height: 1.6; }
+        .menu-card .menu-row { display: flex; justify-content: space-between; align-items: center; margin-top: 6px; padding-top: 14px; border-top: 1px solid var(--border); }
+        .menu-card .menu-price { font-family: var(--font-serif); font-size: 22px; font-weight: 600; color: var(--text); }
+        .menu-card .menu-deal { margin-top: 12px; font-size: 10px; font-weight: 600; background: transparent; color: var(--accent); padding: 6px 12px; border-radius: var(--radius); display: inline-block; align-self: flex-start; border: 1px solid var(--accent); letter-spacing: 1.2px; text-transform: uppercase; }
+        .card-actions { position: absolute; top: 12px; right: 12px; display: flex; gap: 6px; z-index: 2; }
+        .card-actions button { background: rgba(255,255,255,0.95); border: none; width: 34px; height: 34px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.15s; font-family: inherit; padding: 0; }
+        body.dark .card-actions button { background: rgba(22,26,23,0.9); }
+        .card-actions button:hover { background: white; transform: scale(1.05); }
+        body.dark .card-actions button:hover { background: var(--surface-alt); }
+        .card-actions svg { width: 15px; height: 15px; stroke: var(--text-secondary); }
+        .card-actions button.fav-active svg { fill: var(--danger); stroke: var(--danger); }
+
+        .skeleton-card { background: var(--surface); border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border); display: flex; flex-direction: column; }
+        .skeleton-img { width: 100%; height: 200px; background: linear-gradient(90deg, var(--surface-alt) 25%, var(--border) 50%, var(--surface-alt) 75%); background-size: 200% 100%; animation: skeletonWave 1.5s infinite; }
+        .skeleton-body { padding: 20px 22px; }
+        .skeleton-line { height: 11px; background: linear-gradient(90deg, var(--surface-alt) 25%, var(--border) 50%, var(--surface-alt) 75%); background-size: 200% 100%; animation: skeletonWave 1.5s infinite; border-radius: 3px; margin-bottom: 12px; }
+        .skeleton-line.title { height: 16px; width: 70%; }
+        .skeleton-line.short { width: 40%; }
+        .skeleton-line.price { height: 18px; width: 30%; }
+        @keyframes skeletonWave { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+        .empty-text { color: var(--text-muted); padding: 40px 0; text-align: center; font-size: 14px; font-style: italic; }
+        .deals-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+        .deals-card { background: var(--surface); border-radius: var(--radius-lg); padding: 26px 28px; border: 1px solid var(--border); border-left: 2px solid var(--accent); transition: 0.2s; }
+        .deals-card:hover { box-shadow: 0 6px 20px rgba(0,0,0,0.05); }
+        .deals-card .baslik { font-family: var(--font-serif); font-weight: 600; font-size: 20px; color: var(--text); margin-bottom: 8px; letter-spacing: -0.2px; }
+        .deals-card .aciklama { color: var(--text-secondary); font-size: 14px; line-height: 1.6; }
+        .deals-card img { width: 100%; border-radius: var(--radius); margin-top: 16px; max-height: 160px; object-fit: cover; }
+
+        .footer { background: var(--primary); color: rgba(255,255,255,0.7); padding: 64px 40px 0; margin-top: 80px; }
+        body.dark .footer { background: #050806; }
+        .footer-inner { max-width: 1360px; margin: 0 auto; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 40px; padding-bottom: 40px; }
+        .footer .brand { display: flex; align-items: center; gap: 14px; font-family: var(--font-serif); font-size: 22px; font-weight: 600; color: white; }
+        .footer .brand-logo { width: 56px; height: 56px; border-radius: 50%; overflow: hidden; border: 1px solid rgba(255,255,255,0.15); background: white; flex-shrink: 0; }
+        .footer .brand-logo img { width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 50%; transform: scale(1.2); }
+        .footer .brand-text small { display: block; font-family: var(--font-sans); font-weight: 400; font-size: 10px; color: rgba(255,255,255,0.5); letter-spacing: 2px; text-transform: uppercase; margin-top: 4px; }
+        .footer .links { display: flex; gap: 64px; flex-wrap: wrap; }
+        .footer .links div { display: flex; flex-direction: column; gap: 10px; max-width: 260px; }
+        .footer .links div span { font-weight: 600; color: white; margin-bottom: 6px; font-size: 11px; text-transform: uppercase; letter-spacing: 2px; }
+        .footer .links div a { color: rgba(255,255,255,0.6); cursor: pointer; text-decoration: none; font-size: 13.5px; transition: 0.15s; line-height: 1.55; }
+        .footer .links div a:hover { color: white; }
+        .footer-bottom { border-top: 1px solid rgba(255,255,255,0.1); padding: 24px 0; text-align: center; font-size: 12px; color: rgba(255,255,255,0.45); letter-spacing: 0.5px; }
+
+        .modal-overlay { position: fixed; inset: 0; background: rgba(8,20,14,0.65); backdrop-filter: blur(4px); z-index: 999; display: none; align-items: center; justify-content: center; padding: 20px; }
+        .modal-overlay.show { display: flex; }
+        .modal-content { background: var(--surface); border-radius: var(--radius-lg); padding: 36px 34px; max-width: 520px; width: 100%; max-height: 85vh; overflow-y: auto; box-shadow: 0 24px 64px rgba(0,0,0,0.2); position: relative; border: 1px solid var(--border); color: var(--text); }
+        .modal-content .close-modal { position: absolute; right: 18px; top: 16px; background: none; border: none; font-size: 22px; cursor: pointer; color: var(--text-muted); font-family: inherit; line-height: 1; }
+        .modal-content h3 { font-family: var(--font-serif); font-size: 24px; color: var(--text); margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 14px; font-weight: 600; letter-spacing: -0.2px; }
+        .modal-content .total-points { font-family: var(--font-serif); font-size: 44px; font-weight: 600; color: var(--primary); text-align: center; padding: 22px; background: var(--surface-alt); border-radius: var(--radius); margin-bottom: 20px; letter-spacing: -1px; }
+        .history-item { padding: 12px 0; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; font-size: 13.5px; }
+        .history-item .date { color: var(--text-muted); }
+        .history-item .pts { color: var(--text); font-weight: 600; }
+        .policy-text { font-size: 13.5px; line-height: 1.8; color: var(--text-secondary); max-height: 55vh; overflow-y: auto; padding-right: 10px; }
+        .policy-text h4 { color: var(--text); margin: 22px 0 8px; font-size: 14px; font-weight: 600; letter-spacing: 0.3px; }
+        .policy-text ul { padding-left: 20px; }
+
+        .loading-overlay { position: fixed; inset: 0; background: rgba(245,242,237,0.85); backdrop-filter: blur(4px); display: none; align-items: center; justify-content: center; z-index: 500; flex-direction: column; gap: 20px; }
+        body.dark .loading-overlay { background: rgba(13,16,14,0.85); }
+        .loading-overlay.show { display: flex; }
+        .spinner { width: 40px; height: 40px; border: 2px solid var(--border); border-top-color: var(--primary); border-radius: 50%; animation: spin 0.8s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .loading-overlay .loading-text { color: var(--text-secondary); font-weight: 500; font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase; }
+        .hidden { display: none !important; }
+
+        @media (max-width: 1024px) { .main-wrapper { flex-direction: column; padding: 40px 20px; } .filter-sidebar { flex: none; position: relative; top: 0; width: 100%; } }
+        @media (max-width: 768px) {
+            .topbar { padding: 8px 20px; font-size: 11px; justify-content: center; }
+            .topbar .tb-left, .topbar .tb-right { gap: 14px; }
+            .header { padding: 12px 20px; flex-direction: column; align-items: stretch; text-align: center; height: auto; gap: 12px; }
+            .nav-actions { justify-content: center; }
+            .logo { justify-content: center; }
+            .hero { padding: 60px 24px; }
+            .hero h1 { font-size: 38px; }
+            .hero p { font-size: 15px; }
+            .tabs { overflow-x: auto; flex-wrap: nowrap; }
+            .tab-btn { padding: 12px 18px; flex: 0 0 auto; }
+            .menu-grid, .deals-grid { grid-template-columns: 1fr; }
+            .footer { padding: 48px 24px 0; }
+            .footer-inner { gap: 32px; }
+            .footer .links { justify-content: center; gap: 32px; }
+            .footer .brand { justify-content: center; width: 100%; }
+            .menu-toolbar { flex-direction: column; }
+            .sort-select { width: 100%; min-width: 0; }
+            .notif-panel { right: 10px; left: 10px; width: auto; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="topbar">
+    <div class="tb-left">
+        <a href="tel:05515715272" class="tb-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            0551 571 52 72
+        </a>
+        <span class="tb-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            Her gün 10:00 – 22:00
+        </span>
+    </div>
+    <div class="tb-right">
+        <a href="https://instagram.com/ramizkofte_batman" target="_blank" class="tb-item">Instagram</a>
+        <a href="https://tiktok.com/@ramiz.kftebatman" target="_blank" class="tb-item">TikTok</a>
+    </div>
+</div>
+
+<header class="header">
+    <div class="logo" onclick="location.href='index.html'">
+        <div class="logo-icon"><img src="favicon-source.png" alt="Ramiz Köfte" /></div>
+        <div class="logo-text">Ramiz Köfte<small>Batman · Est. 1928</small></div>
+    </div>
+    <div class="nav-actions">
+        <button class="point-badge" id="pointBtn"><span id="headerPoints">0</span>&nbsp;Puan</button>
+        <button class="btn-notif" id="notifBtn" title="Bildirimler">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+            <span class="badge hidden" id="notifBadge">0</span>
+        </button>
+        <button class="btn-login" id="showLoginBtn">Giriş Yap</button>
+        <div class="settings-dropdown" id="settingsDropdown" style="display:none;">
+            <button class="settings-btn" id="settingsToggle" title="Hesap ve Ayarlar">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+            </button>
+            <div class="settings-dropdown-content" id="settingsMenu">
+                <a id="profileItem"><span class="menu-label">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    Profilim</span></a>
+                <a id="pointsHistoryItem"><span class="menu-label">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                    Puan Bilgilerim</span></a>
+                <a id="themeToggleMenuItem"><span class="menu-label">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                    Tema</span><span class="menu-value" id="themeLabel">Aydınlık</span></a>
+                <a class="logout-item" id="logoutBtn"><span class="menu-label">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="stroke: var(--danger);"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                    Çıkış Yap</span></a>
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="notif-panel" id="notifPanel">
+    <h4>Bildirimler <button id="closeNotif">×</button></h4>
+    <div class="notif-list" id="notifList"><div class="empty-text">Yükleniyor...</div></div>
+</div>
+
+<section class="hero">
+    <div class="hero-content">
+        <div class="hero-eyebrow">Est. 1928 · Akhisar</div>
+        <h1>Ramiz Köfte</h1>
+        <div class="divider-ornament"><span>◆</span></div>
+        <p>1928'den beri süregelen lezzet geleneği, Batman'da sofranızda.</p>
+        <button class="btn-hero" id="heroOrderBtn">Sipariş Ver</button>
+    </div>
+</section>
+
+<div class="order-modal" id="orderModal">
+    <div class="order-box">
+        <button class="close-order" id="closeOrderModal">×</button>
+        <h2>Sipariş Ver</h2>
+        <p class="subtitle">Hangi platform üzerinden sipariş vermek istersiniz?</p>
+        <div class="order-options">
+            <a href="https://www.yemeksepeti.com/restaurant/lfd4/ramiz-kofte-lfd4" target="_blank" class="order-option ys"><span>Yemek Sepeti</span><span class="arrow">→</span></a>
+            <a href="https://www.migros.com.tr/yemek/kofteci-ramiz-merkez-gultepe-mah-st-36507" target="_blank" class="order-option migros"><span>Migros Yemek</span><span class="arrow">→</span></a>
+            <a href="tel:05515715272" class="order-option telefon"><span>Telefonla Sipariş</span><span class="arrow">→</span></a>
+        </div>
+    </div>
+</div>
+
+<div class="main-wrapper">
+    <aside class="filter-sidebar">
+        <h4>Filtrele</h4>
+        <div class="filter-group">
+            <label>Fiyat Aralığı</label>
+            <div class="price-row">
+                <input type="number" id="filterPriceMin" placeholder="Min" min="0" />
+                <span>–</span>
+                <input type="number" id="filterPriceMax" placeholder="Max" min="0" />
+            </div>
+        </div>
+        <div class="filter-group">
+            <label>Kategori</label>
+            <div class="checkbox-list">
+                <label><input type="checkbox" class="cat-filter" value="Köfte" /> Köfte</label>
+                <label><input type="checkbox" class="cat-filter" value="Tavuk" /> Tavuk</label>
+                <label><input type="checkbox" class="cat-filter" value="İçecekler" /> İçecekler</label>
+                <label><input type="checkbox" class="cat-filter" value="Tatlılar" /> Tatlılar</label>
+                <label><input type="checkbox" class="cat-filter" value="Diğer" /> Diğer</label>
+            </div>
+        </div>
+        <div class="filter-group">
+            <label style="display:flex; align-items:center; gap:10px; cursor:pointer; text-transform:none; letter-spacing:0;">
+                <input type="checkbox" id="filterDiscount" style="width:15px;height:15px;accent-color:var(--primary);cursor:pointer;" />
+                Sadece indirimli ürünler
+            </label>
+        </div>
+        <button class="btn-filter" id="applyFilterBtn">Filtrele</button>
+        <button class="btn-filter btn-reset" id="resetFilterBtn">Sıfırla</button>
+    </aside>
+
+    <div class="content-area">
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="tabMenu">Menü</button>
+            <button class="tab-btn" data-tab="tabDeals">Fırsatlar</button>
+            <button class="tab-btn" data-tab="tabFavorites">Favorilerim</button>
+        </div>
+
+        <div id="tabMenu" class="section active">
+            <div class="menu-toolbar">
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="Menüde ara..." />
+                </div>
+                <select class="sort-select" id="sortSelect">
+                    <option value="most-favorited">En çok favorilenen</option>
+                    <option value="price-asc">Fiyat: Düşük → Yüksek</option>
+                    <option value="price-desc">Fiyat: Yüksek → Düşük</option>
+                </select>
+            </div>
+            <div class="menu-grid" id="menuGrid"></div>
+        </div>
+
+        <div id="tabDeals" class="section">
+            <div class="deals-grid" id="dealsList"></div>
+        </div>
+
+        <div id="tabFavorites" class="section">
+            <div class="menu-grid" id="favoritesGrid"></div>
+        </div>
+    </div>
+</div>
+
+<footer class="footer">
+    <div class="footer-inner">
+        <div class="brand">
+            <div class="brand-logo"><img src="favicon-source.png" alt="Ramiz Köfte" /></div>
+            <div class="brand-text">Ramiz Köfte<small>Batman · Est. 1928</small></div>
+        </div>
+        <div class="links">
+            <div>
+                <span>İletişim</span>
+                <a href="https://www.google.com/maps/search/?api=1&query=Batman+Merkez+Gültepe+Mahallesi+Demokrasi+Bulvarı+Petrol+City" target="_blank">Gültepe Mah. Demokrasi Bul. Petrol City 2. Kat</a>
+                <a href="tel:05515715272">0551 571 52 72</a>
+            </div>
+            <div>
+                <span>Çalışma Saatleri</span>
+                <a>Hafta içi & Hafta sonu: 10:00 – 22:00</a>
+                <a>Alo Paket Servis: 10:00 – 01:00</a>
+            </div>
+            <div>
+                <span>Sosyal Medya</span>
+                <a href="https://instagram.com/ramizkofte_batman" target="_blank">Instagram</a>
+                <a href="https://tiktok.com/@ramiz.kftebatman" target="_blank">TikTok</a>
+            </div>
+            <div>
+                <span>Yasal</span>
+                <a id="footerKvkk">KVKK Aydınlatma Metni</a>
+                <a href="cerez-politikasi.html">Çerez Politikası</a>
+            </div>
+        </div>
+    </div>
+    <div class="footer-bottom">© 2026 Ramiz Köfte · Tüm hakları saklıdır.</div>
+</footer>
+
+<div class="modal-overlay" id="pointsHistoryModal">
+    <div class="modal-content">
+        <button class="close-modal" id="closePointsHistory">×</button>
+        <h3>Puan Bilgilerim</h3>
+        <div class="total-points" id="totalPointsDisplay">0</div>
+        <div id="historyList"></div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="kvkkModal">
+    <div class="modal-content">
+        <button class="close-modal" id="closeKvkk">×</button>
+        <h3>KVKK Aydınlatma Metni</h3>
+        <div class="policy-text">
+            <p><strong>Veri Sorumlusu:</strong> Ramiz Köfte Batman Şubesi</p>
+            <p><strong>Adres:</strong> Batman Merkez Gültepe Mah. Demokrasi Bul. Petrol City 2. Kat Dış Kapı 60 İç Kapı 116</p>
+            <p><strong>Telefon:</strong> 0551 571 52 72</p>
+            <h4>1. İşlenen Kişisel Veriler</h4>
+            <ul><li>Ad ve soyad</li><li>Telefon numarası</li><li>Puan kazanım ve harcama geçmişi</li><li>Favori ürün tercihleri</li><li>Site üzerindeki işlem kayıtları</li></ul>
+            <h4>2. Kişisel Verilerin İşlenme Amaçları</h4>
+            <ul><li>Üyelik işlemlerinin gerçekleştirilmesi</li><li>Puan kazanım ve kampanya sisteminin işletilmesi</li><li>Müşteri hizmetleri ve talep yönetimi</li><li>Favori ürünlerin kaydedilmesi</li><li>Yasal yükümlülüklerin yerine getirilmesi</li></ul>
+            <h4>3. Toplanma Yöntemi ve Hukuki Sebep</h4>
+            <p>Kişisel verileriniz, web sitemiz üzerinden elektronik ortamda toplanmaktadır. Hukuki sebep olarak KVKK'nın 5. maddesinin 2. fıkrası uyarınca (c), (ç) ve (f) bentleri esas alınmaktadır.</p>
+            <h4>4. Verilerin Aktarımı</h4>
+            <p>Kişisel verileriniz; yasal zorunluluklar dışında üçüncü kişilerle paylaşılmaz.</p>
+            <h4>5. Saklama Süresi</h4>
+            <p>Verileriniz, üyeliğiniz devam ettiği sürece ve yasal saklama süreleri boyunca muhafaza edilir.</p>
+            <h4>6. KVKK Kapsamındaki Haklarınız</h4>
+            <ul><li>Kişisel verilerinizin işlenip işlenmediğini öğrenme</li><li>İşlenmişse bilgi talep etme</li><li>İşlenme amacını öğrenme</li><li>Düzeltilmesini isteme</li><li>Silinmesini veya yok edilmesini isteme</li><li>Zararın giderilmesini talep etme</li></ul>
+            <h4>7. Başvuru Yöntemi</h4>
+            <p>Başvurularınızı <strong>0551 571 52 72</strong> numaralı telefonu arayarak iletebilirsiniz. En geç 30 gün içinde ücretsiz sonuçlandırılır.</p>
+            <p style="margin-top:18px; font-size:12px; color:var(--text-muted);">Son güncelleme: 2026</p>
+        </div>
+    </div>
+</div>
+
+<div class="loading-overlay" id="loadingOverlay">
+    <div class="spinner"></div>
+    <div class="loading-text">Yükleniyor</div>
+</div>
+
+<div id="cookie-banner" style="display:none; position: fixed; bottom: 20px; left: 20px; right: 20px; max-width: 700px; margin: 0 auto; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 18px 22px; box-shadow: 0 12px 32px rgba(0,0,0,0.10); z-index: 99999; font-family: 'Inter', sans-serif; font-size: 13px; color: var(--text); justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap;">
+    <p style="margin: 0; flex: 1; min-width: 200px; line-height: 1.55; color: var(--text-secondary);">Sitemizde deneyiminizi iyileştirmek için çerezler kullanıyoruz. Detaylı bilgi için <a href="cerez-politikasi.html" style="color: var(--primary); font-weight: 600; text-decoration: underline;">Çerez Politikamızı</a> inceleyebilirsiniz.</p>
+    <button id="cookie-accept-btn" style="background: var(--primary); color: #ffffff; border: none; padding: 11px 24px; border-radius: var(--radius); font-weight: 600; font-size: 11px; cursor: pointer; font-family: 'Inter', sans-serif; white-space: nowrap; transition: 0.15s; letter-spacing: 1.2px; text-transform: uppercase;">Kabul Et</button>
+</div>
+<script>
+    (function() {
+        var banner = document.getElementById('cookie-banner');
+        var acceptBtn = document.getElementById('cookie-accept-btn');
+        if (!localStorage.getItem('cookie-consent-accepted')) { banner.style.display = 'flex'; }
+        acceptBtn.addEventListener('click', function() {
+            localStorage.setItem('cookie-consent-accepted', 'true');
+            banner.style.display = 'none';
+        });
+    })();
+</script>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+    import { getFirestore, collection, doc, getDoc, getDocs, setDoc, updateDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyCmxCNThK6AFdyEP9Zj6E_6kEsHBLCfIAY",
+        authDomain: "ramiz-kofte.firebaseapp.com",
+        projectId: "ramiz-kofte",
+        storageBucket: "ramiz-kofte.firebasestorage.app",
+        messagingSenderId: "930378010869",
+        appId: "1:930378010869:web:cf08bee55f56cbcb7835bc"
+    };
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const $ = (id) => document.getElementById(id);
+    function showLoading() { $('loadingOverlay').classList.add('show'); }
+    function hideLoading() { $('loadingOverlay').classList.remove('show'); }
+
+    const CACHE_TTL = 5 * 60 * 1000;
+    function saveToCache(key, data) { try { localStorage.setItem('ramiz_cache_' + key, JSON.stringify({ data, time: Date.now() })); } catch (e) { } }
+    function loadFromCache(key) {
+        try {
+            const cached = localStorage.getItem('ramiz_cache_' + key);
+            if (!cached) return null;
+            const obj = JSON.parse(cached);
+            if (Date.now() - obj.time > CACHE_TTL) { localStorage.removeItem('ramiz_cache_' + key); return null; }
+            return obj.data;
+        } catch { return null; }
+    }
+
+    function renderSkeletons(container, count = 6) {
+        let html = '';
+        for (let i = 0; i < count; i++) html += `<div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-body"><div class="skeleton-line title"></div><div class="skeleton-line short"></div><div class="skeleton-line"></div><div class="skeleton-line price"></div></div></div>`;
+        container.innerHTML = html;
+    }
+
+    let lazyObserver = null;
+    function initLazyLoading() {
+        if (!('IntersectionObserver' in window)) return;
+        lazyObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target;
+                    if (img.dataset.src) {
+                        img.src = img.dataset.src;
+                        img.removeAttribute('data-src');
+                        img.onload = () => img.classList.remove('loading');
+                        lazyObserver.unobserve(img);
+                    }
+                }
+            });
+        }, { rootMargin: '100px' });
+    }
+    function observeLazyImages(container) { if (!lazyObserver) return; container.querySelectorAll('img[data-src]').forEach(img => lazyObserver.observe(img)); }
+
+    let currentUser = null;
+    let allMenu = [], allDeals = [], allNotifications = [], currentFavorites = [];
+    let menuLoaded = false;
+    let unsubMenu = null, unsubDeals = null, unsubNotifs = null, unsubUser = null;
+
+    function initTheme() {
+        const saved = localStorage.getItem('ramiz_theme');
+        if (saved === 'dark') document.body.classList.add('dark');
+        updateThemeLabel();
+    }
+    function updateThemeLabel() {
+        const isDark = document.body.classList.contains('dark');
+        const label = $('themeLabel');
+        if (label) label.textContent = isDark ? 'Karanlık' : 'Aydınlık';
+    }
+    $('themeToggleMenuItem').addEventListener('click', () => {
+        document.body.classList.toggle('dark');
+        const isDark = document.body.classList.contains('dark');
+        localStorage.setItem('ramiz_theme', isDark ? 'dark' : 'light');
+        updateThemeLabel();
+    });
+
+    /* ========== REAL-TIME DİNLEYİCİLER ========== */
+    function listenMenuRealtime() {
+        if (unsubMenu) unsubMenu();
+        unsubMenu = onSnapshot(collection(db, 'ramiz_menu'), (snap) => {
+            allMenu = [];
+            snap.forEach(d => allMenu.push({ id: d.id, ...d.data() }));
+            saveToCache('menu', allMenu);
+            renderMenu();
+        }, (err) => console.warn('Menü dinlenemedi:', err));
+    }
+    function listenDealsRealtime() {
+        if (unsubDeals) unsubDeals();
+        unsubDeals = onSnapshot(collection(db, 'ramiz_deals'), (snap) => {
+            allDeals = [];
+            snap.forEach(d => allDeals.push({ id: d.id, ...d.data() }));
+            saveToCache('deals', allDeals);
+            renderDeals();
+        }, (err) => console.warn('Fırsatlar dinlenemedi:', err));
+    }
+    function listenNotificationsRealtime() {
+        if (unsubNotifs) unsubNotifs();
+        unsubNotifs = onSnapshot(collection(db, 'ramiz_notifications'), (snap) => {
+            allNotifications = [];
+            snap.forEach(d => allNotifications.push({ id: d.id, ...d.data() }));
+            allNotifications.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+            saveToCache('notifications', allNotifications);
+            updateNotifBadge();
+            if ($('notifPanel').classList.contains('show')) renderNotifications();
+        }, (err) => console.warn('Bildirimler dinlenemedi:', err));
+    }
+    function listenUserRealtime(phone) {
+        if (unsubUser) unsubUser();
+        unsubUser = onSnapshot(doc(db, 'ramiz_users', phone), (snap) => {
+            if (!snap.exists()) {
+                if (unsubUser) { unsubUser(); unsubUser = null; }
+                localStorage.removeItem('ramiz_session');
+                currentUser = null;
+                currentFavorites = [];
+                updateUIForLoggedIn(); updateProfileUI(); renderMenu(); renderFavorites();
+                return;
+            }
+            currentUser = { ...snap.data(), telefon: phone };
+            currentFavorites = currentUser.favorites || [];
+            saveToCache('fav_' + phone, currentFavorites);
+            updateUIForLoggedIn();
+            updateProfileUI();
+            renderMenu();
+            renderFavorites();
+        }, (err) => console.warn('Kullanıcı dinlenemedi:', err));
+    }
+
+    /* ========== BİLDİRİMLER (UI) ========== */
+    function getReadNotifications() { try { return JSON.parse(localStorage.getItem('ramiz_read_notifs')) || []; } catch { return []; } }
+    function setReadNotifications(arr) { localStorage.setItem('ramiz_read_notifs', JSON.stringify(arr)); }
+    function updateNotifBadge() {
+        const read = getReadNotifications();
+        const unread = allNotifications.filter(n => !read.includes(n.id)).length;
+        const badge = $('notifBadge');
+        if (unread > 0) { badge.textContent = unread > 9 ? '9+' : unread; badge.classList.remove('hidden'); }
+        else badge.classList.add('hidden');
+    }
+    function renderNotifications() {
+        if (allNotifications.length === 0) { $('notifList').innerHTML = '<div class="empty-text">Henüz bildirim yok.</div>'; return; }
+        let html = '';
+        allNotifications.slice(0, 30).forEach(n => {
+            const date = new Date(n.createdAt).toLocaleString('tr-TR', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' });
+            html += `<div class="notif-item"><div class="baslik">${n.baslik || 'Duyuru'}</div><div class="aciklama">${n.aciklama || ''}</div><span class="date">${date}</span></div>`;
+        });
+        $('notifList').innerHTML = html;
+    }
+    $('notifBtn').addEventListener('click', (e) => {
+        e.stopPropagation();
+        $('notifPanel').classList.toggle('show');
+        if ($('notifPanel').classList.contains('show')) {
+            renderNotifications();
+            const read = getReadNotifications();
+            const allIds = allNotifications.map(n => n.id);
+            setReadNotifications([...new Set([...read, ...allIds])]);
+            updateNotifBadge();
+        }
+    });
+    $('closeNotif').addEventListener('click', () => $('notifPanel').classList.remove('show'));
+    document.addEventListener('click', (e) => {
+        if (!$('notifPanel').contains(e.target) && !$('notifBtn').contains(e.target)) $('notifPanel').classList.remove('show');
+    });
+
+    /* ========== FAVORİLER ========== */
+    async function toggleFavorite(id) {
+        if (!currentUser) { showToast('Favorilere eklemek için giriş yapmalısınız'); return; }
+        try {
+            let favs = [...currentFavorites];
+            const wasFav = favs.includes(id);
+            favs = wasFav ? favs.filter(f => f !== id) : [...favs, id];
+            await updateDoc(doc(db, 'ramiz_users', currentUser.telefon), { favorites: favs });
+            // onSnapshot tetiklenecek ve UI güncellenecek
+            showToast(wasFav ? 'Favorilerden çıkarıldı' : 'Favorilere eklendi');
+        } catch (e) { showToast('Bir hata oluştu'); }
+    }
+    function showToast(msg) {
+        let toast = document.getElementById('favToast');
+        if (!toast) {
+            toast = document.createElement('div');
+            toast.id = 'favToast';
+            toast.style.cssText = 'position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--primary);color:white;padding:14px 26px;border-radius:4px;font-weight:500;font-size:13px;box-shadow:0 8px 24px rgba(0,0,0,0.25);z-index:9999;opacity:0;transition:all 0.3s ease;pointer-events:none;font-family:Inter,sans-serif;letter-spacing:0.3px;';
+            document.body.appendChild(toast);
+        }
+        toast.textContent = msg;
+        setTimeout(() => { toast.style.opacity = '1'; toast.style.transform = 'translateX(-50%) translateY(0)'; }, 10);
+        clearTimeout(toast._timer);
+        toast._timer = setTimeout(() => { toast.style.opacity = '0'; toast.style.transform = 'translateX(-50%) translateY(20px)'; }, 2000);
+    }
+    async function shareItem(item) {
+        const text = `Ramiz Köfte'de "${item.baslik}" -`;
+        const url = window.location.href;
+        if (navigator.share) { try { await navigator.share({ title: 'Ramiz Köfte', text, url }); return; } catch { } }
+        window.open(`https://wa.me/?text=${encodeURIComponent(text + ' ' + url)}`, '_blank');
+    }
+
+    /* ========== FİLTRE + SIRALAMA ========== */
+    async function getFavoriteCounts() {
+        const cached = loadFromCache('favCounts');
+        if (cached) return cached;
+        const counts = {};
+        try {
+            const snap = await getDocs(collection(db, 'ramiz_users'));
+            snap.forEach(d => (d.data().favorites || []).forEach(id => { counts[id] = (counts[id] || 0) + 1; }));
+            saveToCache('favCounts', counts);
+        } catch { }
+        return counts;
+    }
+    function getSelectedCategories() { return Array.from(document.querySelectorAll('.cat-filter')).filter(c => c.checked).map(c => c.value); }
+    function getFilteredMenu() {
+        const minVal = $('filterPriceMin').value.trim(), maxVal = $('filterPriceMax').value.trim();
+        const minPrice = minVal === '' ? null : parseFloat(minVal);
+        const maxPrice = maxVal === '' ? null : parseFloat(maxVal);
+        const onlyDiscount = $('filterDiscount').checked;
+        const selectedCats = getSelectedCategories();
+        const query = ($('searchInput').value || '').trim().toLowerCase();
+        return allMenu.filter(item => {
+            if (selectedCats.length > 0 && !selectedCats.includes(item.kategori)) return false;
+            const price = parseFloat(item.fiyat) || 0;
+            if (minPrice !== null && !isNaN(minPrice) && price < minPrice) return false;
+            if (maxPrice !== null && !isNaN(maxPrice) && price > maxPrice) return false;
+            if (onlyDiscount && !item.indirimBaslik) return false;
+            if (query) {
+                const t = (item.baslik || '').toLowerCase(), d = (item.aciklama || '').toLowerCase(), c = (item.kategori || '').toLowerCase();
+                if (!t.includes(query) && !d.includes(query) && !c.includes(query)) return false;
+            }
+            return true;
+        });
+    }
+    async function getSortedMenu(list) {
+        const sort = $('sortSelect').value;
+        const arr = [...list];
+        if (sort === 'price-asc') arr.sort((a, b) => (parseFloat(a.fiyat) || 0) - (parseFloat(b.fiyat) || 0));
+        else if (sort === 'price-desc') arr.sort((a, b) => (parseFloat(b.fiyat) || 0) - (parseFloat(a.fiyat) || 0));
+        else {
+            const counts = await getFavoriteCounts();
+            arr.sort((a, b) => { const ca = counts[a.id] || 0, cb = counts[b.id] || 0; return cb !== ca ? cb - ca : (b.id || '').localeCompare(a.id || ''); });
+        }
+        return arr;
+    }
+    const heartSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>';
+    const shareSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>';
+    function buildCardHTML(item) {
+        const category = item.kategori || 'Diğer';
+        const dealText = item.indirimBaslik || '';
+        const dealLink = item.indirimLink || '';
+        const fav = currentFavorites.includes(item.id);
+        let imgHTML;
+        if (item.resimUrl) imgHTML = `<img class="menu-img loading" data-src="${item.resimUrl}" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 200'%3E%3Crect fill='%23efece6' width='400' height='200'/%3E%3C/svg%3E" alt="${item.baslik}" />`;
+        else imgHTML = `<div class="menu-img" style="background:var(--surface-alt);display:flex;align-items:center;justify-content:center;color:var(--text-muted);font-size:11px;letter-spacing:3px;font-family:var(--font-serif);">RAMİZ KÖFTE</div>`;
+        return `<div class="menu-card">
+            <div class="card-actions">
+                <button class="fav-btn ${fav ? 'fav-active' : ''}" data-id="${item.id}" title="Favori">${heartSvg}</button>
+                <button class="share-btn" data-id="${item.id}" title="Paylaş">${shareSvg}</button>
+            </div>
+            ${imgHTML}
+            <div class="menu-body">
+                <div class="menu-title">${item.baslik}</div>
+                <div class="menu-category">${category}</div>
+                <div class="menu-desc">${item.aciklama || ''}</div>
+                <div class="menu-row"><span class="menu-price">₺${item.fiyat || '0'}</span></div>
+                ${dealText ? `<div class="menu-deal"><a href="${dealLink}" target="_blank">${dealText}</a></div>` : ''}
+            </div>
+        </div>`;
+    }
+    function attachCardEvents(container) {
+        container.querySelectorAll('.fav-btn').forEach(btn => btn.addEventListener('click', (e) => { e.stopPropagation(); toggleFavorite(btn.dataset.id); }));
+        container.querySelectorAll('.share-btn').forEach(btn => btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const item = allMenu.find(m => m.id === btn.dataset.id);
+            if (item) shareItem(item);
+        }));
+        observeLazyImages(container);
+    }
+    async function renderMenu() {
+        const grid = $('menuGrid');
+        if (!menuLoaded) renderSkeletons(grid, 6);
+        const filtered = getFilteredMenu();
+        const sorted = await getSortedMenu(filtered);
+        if (sorted.length === 0) { grid.innerHTML = '<div class="empty-text">Bu kriterlere uygun ürün bulunamadı.</div>'; menuLoaded = true; return; }
+        grid.innerHTML = sorted.map(buildCardHTML).join('');
+        attachCardEvents(grid);
+        menuLoaded = true;
+    }
+    async function renderFavorites() {
+        const grid = $('favoritesGrid');
+        if (!currentUser) { grid.innerHTML = '<div class="empty-text">Favorilerinizi görmek için giriş yapın.</div>'; return; }
+        if (currentFavorites.length === 0) { grid.innerHTML = '<div class="empty-text">Henüz favoriniz yok.</div>'; return; }
+        const favItems = allMenu.filter(m => currentFavorites.includes(m.id));
+        if (favItems.length === 0) { grid.innerHTML = '<div class="empty-text">Favori ürünleriniz artık mevcut değil.</div>'; return; }
+        grid.innerHTML = favItems.map(buildCardHTML).join('');
+        attachCardEvents(grid);
+    }
+    function renderDeals() {
+        const list = $('dealsList');
+        if (allDeals.length === 0) { list.innerHTML = '<div class="empty-text">Henüz fırsat yok.</div>'; return; }
+        let html = '';
+        [...allDeals].reverse().forEach(d => {
+            const img = d.resimUrl ? `<img src="${d.resimUrl}" alt="${d.baslik}" loading="lazy" />` : '';
+            html += `<div class="deals-card"><div class="baslik">${d.baslik}</div><div class="aciklama">${d.aciklama}</div>${img}</div>`;
+        });
+        list.innerHTML = html;
+    }
+    function renderHistory() {
+        const history = currentUser ? (currentUser.history || []) : [];
+        if (history.length === 0) { $('historyList').innerHTML = '<div class="empty-text">Henüz puan geçmişi yok.</div>'; return; }
+        let html = '';
+        [...history].reverse().forEach(item => {
+            const date = new Date(item.timestamp).toLocaleString('tr-TR', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+            const sign = item.points >= 0 ? '+' : '';
+            html += `<div class="history-item"><span class="date">${date}</span><span class="pts">${sign}${item.points} puan</span></div>`;
+        });
+        $('historyList').innerHTML = html;
+    }
+    function updateUIForLoggedIn() {
+        const isLoggedIn = !!currentUser;
+        $('showLoginBtn').classList.toggle('hidden', isLoggedIn);
+        $('settingsDropdown').style.display = isLoggedIn ? 'inline-block' : 'none';
+        $('pointBtn').style.display = isLoggedIn ? 'flex' : 'none';
+        if (!isLoggedIn) $('headerPoints').textContent = '0';
+    }
+    function updateProfileUI() {
+        if (!currentUser) return;
+        $('headerPoints').textContent = currentUser.puan || 0;
+        $('totalPointsDisplay').textContent = currentUser.puan || 0;
+        renderHistory();
+    }
+    function handleLogout() {
+        if (unsubUser) { unsubUser(); unsubUser = null; }
+        localStorage.removeItem('ramiz_session');
+        currentUser = null;
+        currentFavorites = [];
+        $('settingsMenu').classList.remove('show');
+        updateUIForLoggedIn(); renderMenu(); renderFavorites();
+    }
+    function switchTab(tabId) {
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.tab === tabId));
+        document.querySelectorAll('.section').forEach(sec => sec.classList.toggle('active', sec.id === tabId));
+        if (tabId === 'tabFavorites') renderFavorites();
+    }
+
+    $('settingsToggle').addEventListener('click', function(e) { e.stopPropagation(); $('settingsMenu').classList.toggle('show'); });
+    document.addEventListener('click', function(e) { if (!$('settingsToggle').contains(e.target) && !$('settingsMenu').contains(e.target)) $('settingsMenu').classList.remove('show'); });
+    $('profileItem').addEventListener('click', function() { location.href = 'profil.html'; });
+    $('pointsHistoryItem').addEventListener('click', function() { $('settingsMenu').classList.remove('show'); renderHistory(); $('totalPointsDisplay').textContent = currentUser ? currentUser.puan || 0 : 0; $('pointsHistoryModal').classList.add('show'); });
+    $('closePointsHistory').addEventListener('click', () => $('pointsHistoryModal').classList.remove('show'));
+    $('showLoginBtn').addEventListener('click', function() { location.href = 'giris.html'; });
+    $('logoutBtn').addEventListener('click', handleLogout);
+    $('pointBtn').addEventListener('click', function() { if (currentUser) $('pointsHistoryItem').click(); });
+    $('heroOrderBtn').addEventListener('click', () => $('orderModal').classList.add('show'));
+    $('closeOrderModal').addEventListener('click', () => $('orderModal').classList.remove('show'));
+    $('orderModal').addEventListener('click', (e) => { if (e.target === $('orderModal')) $('orderModal').classList.remove('show'); });
+
+    function openKvkkModal() { $('kvkkModal').classList.add('show'); }
+    $('closeKvkk').addEventListener('click', () => $('kvkkModal').classList.remove('show'));
+    $('kvkkModal').addEventListener('click', (e) => { if (e.target === $('kvkkModal')) $('kvkkModal').classList.remove('show'); });
+    $('footerKvkk').addEventListener('click', (e) => { e.preventDefault(); openKvkkModal(); });
+
+    let searchTimer = null;
+    $('searchInput').addEventListener('input', function() { clearTimeout(searchTimer); searchTimer = setTimeout(() => renderMenu(), 250); });
+    $('sortSelect').addEventListener('change', () => renderMenu());
+    $('applyFilterBtn').addEventListener('click', () => renderMenu());
+    $('resetFilterBtn').addEventListener('click', function() {
+        $('filterPriceMin').value = ''; $('filterPriceMax').value = '';
+        $('filterDiscount').checked = false; $('searchInput').value = '';
+        $('sortSelect').value = 'most-favorited';
+        document.querySelectorAll('.cat-filter').forEach(c => c.checked = false);
+        renderMenu();
+    });
+    document.querySelectorAll('.tab-btn').forEach(btn => { btn.addEventListener('click', function() { switchTab(this.dataset.tab); }); });
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            ['pointsHistoryModal','orderModal','kvkkModal'].forEach(id => $(id).classList.remove('show'));
+            $('settingsMenu').classList.remove('show');
+            $('notifPanel').classList.remove('show');
+        }
+    });
+
+    /* ========== INIT ========== */
+    async function init() {
+        initTheme();
+        initLazyLoading();
+        renderSkeletons($('menuGrid'), 6);
+        renderSkeletons($('favoritesGrid'), 3);
+        $('dealsList').innerHTML = '<div class="empty-text">Yükleniyor...</div>';
+
+        // Cache'den hızlı render (varsa)
+        const cachedMenu = loadFromCache('menu');
+        if (cachedMenu) { allMenu = cachedMenu; renderMenu(); }
+        const cachedDeals = loadFromCache('deals');
+        if (cachedDeals) { allDeals = cachedDeals; renderDeals(); }
+        const cachedNotifs = loadFromCache('notifications');
+        if (cachedNotifs) { allNotifications = cachedNotifs; updateNotifBadge(); }
+
+        // Session kontrolü
+        const sessionPhone = localStorage.getItem('ramiz_session');
+        if (sessionPhone) {
+            try {
+                const snap = await getDoc(doc(db, 'ramiz_users', sessionPhone));
+                if (snap.exists()) {
+                    currentUser = { ...snap.data(), telefon: sessionPhone };
+                    currentFavorites = currentUser.favorites || [];
+                } else {
+                    localStorage.removeItem('ramiz_session');
+                }
+            } catch { }
+        }
+        updateUIForLoggedIn();
+        updateProfileUI();
+
+        // Real-time dinleyiciler — hepsi aynı anda bağlanır
+        listenMenuRealtime();
+        listenDealsRealtime();
+        listenNotificationsRealtime();
+        if (currentUser) listenUserRealtime(currentUser.telefon);
+
+        switchTab('tabMenu');
+    }
+    init();
+</script>
+</body>
+</html>
