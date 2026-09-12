@@ -13,10 +13,14 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Poppins', sans-serif; background: #fafcfa; color: #1e2a1e; min-height: 100vh; padding: 40px 20px; }
         .container { max-width: 800px; margin: 0 auto; background: white; border-radius: 32px; padding: 40px 36px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); border: 1px solid #e8f0e8; }
-        .logo-top { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; padding-bottom: 20px; border-bottom: 2px solid #e8f0e8; }
-        .logo-top img { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid #1a1a5c; }
-        .logo-top h1 { font-size: 22px; color: #0f6b32; font-weight: 800; }
+
+        /* LOGO */
+        .logo-top { display: flex; align-items: center; gap: 14px; margin-bottom: 24px; padding-bottom: 20px; border-bottom: 2px solid #e8f0e8; }
+        .logo-circle { width: 74px; height: 74px; border-radius: 50%; overflow: hidden; border: 2px solid #1a1a5c; background: white; flex-shrink: 0; display: flex; align-items: center; justify-content: center; padding: 0; }
+        .logo-circle img { width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 50%; transform: scale(1.2); }
+        .logo-top h1 { font-size: 22px; color: #0f6b32; font-weight: 800; line-height: 1.1; }
         .logo-top small { display: block; font-size: 12px; color: #4a7a4a; font-weight: 400; }
+
         h2 { font-size: 24px; color: #0a4a22; margin: 24px 0 12px; }
         h3 { font-size: 18px; color: #0a4a22; margin: 20px 0 8px; }
         p { font-size: 15px; line-height: 1.7; color: #4a5a4a; margin-bottom: 12px; }
@@ -41,7 +45,7 @@
 <body>
     <div class="container">
         <div class="logo-top">
-            <img src="favicon-source.png" alt="Ramiz Köfte" />
+            <div class="logo-circle"><img src="favicon-source.png" alt="Ramiz Köfte" /></div>
             <div>
                 <h1>Ramiz Köfte</h1>
                 <small>Batman Şubesi</small>
@@ -62,41 +66,13 @@
         <p>Sitemizde yalnızca <strong>zorunlu (teknik) çerezler</strong> kullanılmaktadır. Bu çerezler, sitenin düzgün çalışması için gereklidir ve kişisel verilerinizi pazarlama amacıyla işlemez.</p>
 
         <table>
-            <tr>
-                <th>Çerez Adı</th>
-                <th>Amaç</th>
-                <th>Süre</th>
-            </tr>
-            <tr>
-                <td>ramiz_session</td>
-                <td>Oturum yönetimi (giriş bilgisi)</td>
-                <td>Oturum süresi</td>
-            </tr>
-            <tr>
-                <td>ramiz_theme</td>
-                <td>Karanlık/aydınlık mod tercihi</td>
-                <td>1 yıl</td>
-            </tr>
-            <tr>
-                <td>ramiz_cache_*</td>
-                <td>Menü ve fırsatların hızlı yüklenmesi için önbellek</td>
-                <td>5 dakika</td>
-            </tr>
-            <tr>
-                <td>ramiz_admin_session</td>
-                <td>Yönetici oturum bilgisi (sadece yöneticiler için)</td>
-                <td>Oturum süresi</td>
-            </tr>
-            <tr>
-                <td>cookie-consent-accepted</td>
-                <td>Çerez bildiriminin kabul edildiği bilgisi</td>
-                <td>1 yıl</td>
-            </tr>
-            <tr>
-                <td>ramiz_read_notifs</td>
-                <td>Okunan bildirimlerin kaydı</td>
-                <td>Silinene kadar</td>
-            </tr>
+            <tr><th>Çerez Adı</th><th>Amaç</th><th>Süre</th></tr>
+            <tr><td>ramiz_session</td><td>Oturum yönetimi (giriş bilgisi)</td><td>Oturum süresi</td></tr>
+            <tr><td>ramiz_theme</td><td>Karanlık/aydınlık mod tercihi</td><td>1 yıl</td></tr>
+            <tr><td>ramiz_cache_*</td><td>Menü ve fırsatların hızlı yüklenmesi</td><td>5 dakika</td></tr>
+            <tr><td>ramiz_admin_session</td><td>Yönetici oturum bilgisi</td><td>Oturum süresi</td></tr>
+            <tr><td>cookie-consent-accepted</td><td>Çerez bildirimi kabul bilgisi</td><td>1 yıl</td></tr>
+            <tr><td>ramiz_read_notifs</td><td>Okunan bildirimlerin kaydı</td><td>Silinene kadar</td></tr>
         </table>
 
         <h3>3. Çerezlerin Kullanım Amaçları</h3>
@@ -128,7 +104,7 @@
 
         <h3>6. İletişim</h3>
         <p>Çerez politikamızla ilgili sorularınız için bize ulaşabilirsiniz:</p>
-        <p><strong>Ramiz Köfte Batman Şubesi</strong><br>Tel: 0 555 123 45 67</p>
+        <p><strong>Ramiz Köfte Batman Şubesi</strong><br>📍 Batman Merkez Gültepe Mah. Demokrasi Bul. Petrol City 2. Kat Dış Kapı 60 İç Kapı 116<br>📞 0501 571 52 72</p>
 
         <a href="index.html" class="back-btn">🍽️ Anasayfaya Dön</a>
     </div>
