@@ -252,11 +252,11 @@
         <div class="login-logo"><img src="favicon-source.png" alt="Ramiz Köfte" /></div>
         <h1>Yönetici Girişi</h1>
         <div class="subtitle">Ramiz Köfte · Batman</div>
-        <div class="form-group"><label>Yönetici Telefonu</label><input type="tel" id="adminPhone" value="05515715272" autocomplete="tel" /></div>
+        <div class="form-group"><label>Yönetici Telefonu</label><input type="tel" id="adminPhone" value="05015715272" autocomplete="tel" /></div>
         <div class="form-group"><label>Şifre</label><input type="password" id="adminPassword" autocomplete="current-password" /></div>
         <button class="btn-login" id="adminLoginBtn">Giriş Yap</button>
         <div class="login-error" id="loginError"></div>
-        <div class="hint">İlk giriş: 05515715272 / admin123</div>
+        <div class="hint">İlk giriş: 05015715272 / admin123</div>
         <div class="back-link"><a href="index.html">← Anasayfaya dön</a></div>
     </div>
 </div>
@@ -551,7 +551,7 @@
     const db = getFirestore(app);
 
     const $ = (id) => document.getElementById(id);
-    const DEFAULT_ADMIN_PHONE = '05515715272';
+    const DEFAULT_ADMIN_PHONE = '05015715272';
     const DEFAULT_ADMIN_PASS = 'admin123';
     let selectedAddPhone = null, selectedRemovePhone = null, confirmCallback = null;
     let adminData = { telefon: DEFAULT_ADMIN_PHONE, sifre: DEFAULT_ADMIN_PASS };
